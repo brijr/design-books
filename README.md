@@ -1,8 +1,5 @@
-# blank
+# Design Books 
 
-blank
+> 🔗 [designbooks.org](https://designbooks.org)
 
-## Attributes
-
-- **Database**: mongodb
-- **Storage Adapter**: localDisk
+This is the Payload / Next.js application for [designbooks.org](https://designbooks.org). Created by [Bridger Tower](https://bridger.to).
