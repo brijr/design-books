@@ -2,16 +2,39 @@ import { queryBookBySlug } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { cn } from "@/lib/cn";
-
+import { Metadata } from "next";
 import Image from "next/image";
 
 export const revalidate = 600;
 
-export default async function Home({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const book = await queryBookBySlug({ slug });
+
+  if (!book) {
+    return {
+      title: "Book Not Found",
+      description: "The requested book could not be found",
+    };
+  }
+
+  return {
+    title: `${book.title} | designbooks.org`,
+    description: book.description,
+    openGraph: {
+      title: `${book.title} | designbooks.org`,
+      description: book.description,
+      // @ts-ignore
+      images: book.image?.url ? [book.image.url] : [],
+    },
+  };
+}
+
+export default async function Page({ params }: Props) {
   const { slug } = await params;
   const book = await queryBookBySlug({ slug });
   const cover: any = book?.image;
