@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 import { Metadata } from "next";
 import Image from "next/image";
 
-export const revalidate = 600;
+export const revalidate = 1200;
 
 type Props = {
   params: Promise<{ slug: string }>;
