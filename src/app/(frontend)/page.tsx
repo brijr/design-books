@@ -2,11 +2,53 @@ import { queryAllBooks, searchBooks } from "@/lib/data";
 import { Book } from "@/payload-types";
 import { cn } from "@/lib/cn";
 import { SearchInput } from "@/components/search-input";
+import {
+  collectionJsonLd,
+  getBookImage,
+  HOME_TITLE,
+  serializeJsonLd,
+  SITE_DESCRIPTION,
+  SITE_URL,
+} from "@/lib/seo";
 
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 export const revalidate = 600;
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    absolute: HOME_TITLE,
+  },
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    title: HOME_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "/",
+  },
+  twitter: {
+    card: "summary",
+    title: HOME_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+};
 
 export default async function Home({
   searchParams,
@@ -17,65 +59,81 @@ export default async function Home({
   const books = search
     ? await searchBooks({ query: search })
     : await queryAllBooks();
+  const jsonLd = collectionJsonLd(books);
 
   return (
-    <section className="grid gap-12">
-      <div>
-        <h2 className="font-medium">
-          A collection of books on the subject of design.
-        </h2>
-        <p className="text-zinc-400">
-          Curated by{" "}
-          <a className="link" href="https://bridger.to">
-            Bridger Tower
-          </a>{" "}
-          at{" "}
-          <a className="link" href="https://wipdes.com">
-            WIP
-          </a>
-        </p>
-      </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+      />
 
-      <div className="grid grid-cols-[1fr_auto] items-center gap-4">
-        <SearchInput defaultValue={search} />
-        <p className="text-zinc-400">
-          {books.length} {books.length === 1 ? "book" : "books"}
-        </p>
-      </div>
-
-      {books.length > 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {books.map((book) => (
-            <BookCard key={book.id} book={book} />
-          ))}
+      <section className="grid gap-12">
+        <div>
+          <h1 className="font-medium">
+            A curated collection of essential books on design.
+          </h1>
+          <p className="text-zinc-400">
+            Product, interaction, visual design, usability, systems, and craft.
+            Curated by{" "}
+            <a className="link" href="https://bridger.to">
+              Bridger Tower
+            </a>{" "}
+            at{" "}
+            <a className="link" href="https://wipdes.com">
+              WIP
+            </a>
+          </p>
         </div>
-      ) : (
-        <p className="text-zinc-400">No books found</p>
-      )}
-    </section>
+
+        <div className="grid grid-cols-[1fr_auto] items-center gap-4">
+          <SearchInput defaultValue={search} />
+          <p className="text-zinc-400">
+            {books.length} {books.length === 1 ? "book" : "books"}
+          </p>
+        </div>
+
+        {books.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {books.map((book) => (
+              <BookCard key={book.id} book={book} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-zinc-400">No books found</p>
+        )}
+      </section>
+    </>
   );
 }
 
 const BookCard = ({ book }: { book: Book }) => {
-  const cover: any = book?.image;
+  const cover = getBookImage(book);
 
   return (
     <div className="relative group" key={book.id}>
       <Link
         href={`/${book.slug}`}
+        aria-label={`Read about ${book.title} by ${book.author}`}
         className={cn(
           "p-8 relative flex flex-col items-center justify-center",
           "aspect-square rounded-xl bg-zinc-100 border border-zinc-200",
-          "hover:bg-zinc-200 transition-colors duration-300"
+          "hover:bg-zinc-200 transition-colors duration-300",
         )}
       >
-        <Image
-          src={cover.url}
-          width={cover.width}
-          height={cover.height}
-          alt={cover.alt}
-          className="max-w-36 w-auto h-auto max-h-36 sm:max-w-48 sm:max-h-48 -mt-8"
-        />
+        {cover?.url ? (
+          <Image
+            src={cover.url}
+            width={cover.width || 320}
+            height={cover.height || 480}
+            alt={cover.alt || `${book.title} book cover`}
+            className="max-w-36 w-auto h-auto max-h-36 sm:max-w-48 sm:max-h-48 -mt-8"
+          />
+        ) : (
+          <div className="max-w-48 text-center text-lg font-medium">
+            {book.title}
+          </div>
+        )}
         <div className="absolute bottom-4 text-sm left-4 w-3/4">
           <h3 className="truncate">{book.title}</h3>
           <h4 className="text-zinc-400">{book.author}</h4>
@@ -85,6 +143,7 @@ const BookCard = ({ book }: { book: Book }) => {
         <a
           className="hidden group-hover:inline-block absolute bottom-4 right-4"
           target="_blank"
+          rel="noopener noreferrer"
           href={book.link}
         >
           <span className="sr-only">Purchase this book</span>

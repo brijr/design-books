@@ -4,13 +4,41 @@ import { Manrope as Font } from "next/font/google";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 
+import {
+  HOME_TITLE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/seo";
+
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Design Books | A Collection of Books on Design by Bridger Tower",
-  description:
-    "A collection of books on design by Bridger Tower. Discover your next favorite book on design.",
-  metadataBase: new URL("https://designbooks.org"),
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: HOME_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: "Bridger Tower", url: "https://bridger.to" }],
+  creator: "Bridger Tower",
+  publisher: "WIP",
+  keywords: SITE_KEYWORDS,
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+    title: HOME_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+  },
+  twitter: {
+    card: "summary",
+    title: HOME_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 const font = Font({

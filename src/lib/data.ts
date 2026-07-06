@@ -39,9 +39,23 @@ export const searchBooks = cache(async ({ query }: { query: string }) => {
     collection: "books",
     pagination: false,
     where: {
-      title: {
-        contains: query,
-      },
+      or: [
+        {
+          title: {
+            contains: query,
+          },
+        },
+        {
+          author: {
+            contains: query,
+          },
+        },
+        {
+          description: {
+            contains: query,
+          },
+        },
+      ],
     },
   });
 
