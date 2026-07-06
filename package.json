@@ -10,54 +10,44 @@
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
-    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
-    "@payloadcms/db-sqlite": "latest",
-    "@payloadcms/next": "latest",
-    "@payloadcms/payload-cloud": "latest",
-    "@payloadcms/richtext-lexical": "latest",
-    "@payloadcms/storage-vercel-blob": "latest",
+    "@payloadcms/db-sqlite": "3.85.2",
+    "@payloadcms/next": "3.85.2",
+    "@payloadcms/payload-cloud": "3.85.2",
+    "@payloadcms/richtext-lexical": "3.85.2",
+    "@payloadcms/storage-vercel-blob": "3.85.2",
     "@tailwindcss/typography": "^0.5.15",
     "@vercel/analytics": "^1.4.1",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
     "graphql": "^16.9.0",
     "libsql": "0.5.0-pre.2",
-    "next": "15.0.3",
-    "payload": "latest",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "next": "16.2.10",
+    "payload": "3.85.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "sharp": "0.32.6",
     "tailwind-merge": "^2.5.5",
     "use-debounce": "^10.0.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.0.0-beta.4",
+    "@tailwindcss/postcss": "^4.3.2",
     "@types/node": "^22.10.1",
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "15.0.3",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.2.10",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
-    "tailwindcss": "4.0.0-beta.4",
+    "tailwindcss": "^4.3.2",
     "typescript": "5.7.2"
   },
   "engines": {
-    "node": "^18.20.2 || >=20.9.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "npm:types-react@19.0.0-rc.1",
-      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
-    }
-  },
-  "overrides": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    "node": ">=20.9.0"
   }
 }
