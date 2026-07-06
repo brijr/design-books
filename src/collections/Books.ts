@@ -65,6 +65,15 @@ export const Books: CollectionConfig = {
       type: "richText",
     },
     {
+      name: "topics",
+      type: "relationship",
+      relationTo: "topics",
+      hasMany: true,
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
       name: "link",
       type: "text",
       admin: {

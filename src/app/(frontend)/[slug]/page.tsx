@@ -2,6 +2,7 @@ import { queryAllBooks, queryBookBySlug } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { cn } from "@/lib/cn";
+import Link from "next/link";
 import {
   bookJsonLd,
   bookMetadataTitle,
@@ -12,6 +13,12 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/lib/seo";
+import {
+  authorUrl,
+  getBookTopics,
+  splitAuthors,
+  topicUrl,
+} from "@/lib/taxonomy";
 import type { Metadata } from "next";
 import Image from "next/image";
 
@@ -92,6 +99,8 @@ export default async function Page({ params }: Props) {
   }
 
   const cover = getBookImage(book);
+  const authors = splitAuthors(book.author);
+  const topics = getBookTopics(book);
   const jsonLd = bookJsonLd(book);
 
   return (
@@ -103,11 +112,34 @@ export default async function Page({ params }: Props) {
 
       <div>
         <h1 className="font-medium">{book.title}</h1>
-        <p className="text-zinc-400">by {book.author}</p>
+        <p className="text-zinc-400">
+          by{" "}
+          {authors.map((author, index) => (
+            <span key={author}>
+              <Link className="link" href={authorUrl(author)}>
+                {author}
+              </Link>
+              {index < authors.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </p>
       </div>
 
       <div className="grid gap-4 max-w-prose">
         <p>{book.description}</p>
+        {topics.length > 0 && (
+          <p className="text-sm text-zinc-400">
+            Topics:{" "}
+            {topics.map((topic, index) => (
+              <span key={topic.id}>
+                <Link className="link" href={topicUrl(topic)}>
+                  {topic.title}
+                </Link>
+                {index < topics.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </p>
+        )}
         {book.link && (
           <a target="_blank" rel="noopener noreferrer" href={book.link}>
             [ <span className="link">Purchase this book</span> ]

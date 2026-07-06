@@ -1,4 +1,5 @@
-import type { Book, Media } from "@/payload-types";
+import type { Book, Media, Topic } from "@/payload-types";
+import { getBookTopics, splitAuthors } from "@/lib/taxonomy";
 
 export const SITE_URL = "https://designbooks.org";
 export const SITE_NAME = "Design Books";
@@ -21,7 +22,15 @@ export function absoluteUrl(path = "/") {
 }
 
 export function bookUrl(book: Pick<Book, "slug">) {
-  return absoluteUrl(`/${book.slug}`);
+  return absoluteUrl(`/${book.slug.trim()}`);
+}
+
+export function topicAbsoluteUrl(topic: Pick<Topic, "slug">) {
+  return absoluteUrl(`/topics/${topic.slug}`);
+}
+
+export function authorAbsoluteUrl(slug: string) {
+  return absoluteUrl(`/authors/${slug}`);
 }
 
 export function getBookImage(book: Book): Media | null {
@@ -134,9 +143,100 @@ export function collectionJsonLd(books: Book[]) {
   };
 }
 
+export function collectionPageJsonLd({
+  id,
+  name,
+  url,
+  description,
+  books,
+}: {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  books: Book[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}#collection`,
+        name,
+        url,
+        description,
+        isPartOf: {
+          "@id": absoluteUrl("/#website"),
+        },
+        mainEntity: {
+          "@id": `${url}#item-list`,
+        },
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${url}#item-list`,
+        name: id,
+        numberOfItems: books.length,
+        itemListElement: books.map((book, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: bookUrl(book),
+          name: bookMetadataTitle(book),
+        })),
+      },
+    ],
+  };
+}
+
+export function collectionIndexJsonLd({
+  id,
+  name,
+  url,
+  description,
+  items,
+}: {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  items: { name: string; url: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}#collection`,
+        name,
+        url,
+        description,
+        isPartOf: {
+          "@id": absoluteUrl("/#website"),
+        },
+        mainEntity: {
+          "@id": `${url}#item-list`,
+        },
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${url}#item-list`,
+        name: id,
+        numberOfItems: items.length,
+        itemListElement: items.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: item.url,
+          name: item.name,
+        })),
+      },
+    ],
+  };
+}
+
 export function bookJsonLd(book: Book) {
   const image = getBookImageMetadata(book);
   const url = bookUrl(book);
+  const topics = getBookTopics(book);
 
   return {
     "@context": "https://schema.org",
@@ -145,14 +245,15 @@ export function bookJsonLd(book: Book) {
         "@type": "Book",
         "@id": `${url}#book`,
         name: book.title,
-        author: {
+        author: splitAuthors(book.author).map((author) => ({
           "@type": "Person",
-          name: book.author,
-        },
+          name: author,
+        })),
         description: book.description,
         image: image?.url,
         url,
         mainEntityOfPage: url,
+        about: topics.map((topic) => topic.title),
       },
       {
         "@type": "BreadcrumbList",
