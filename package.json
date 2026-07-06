@@ -6,6 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "content:audit": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/audit-content-seo.ts",
+    "content:update": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-content-seo.ts",
+    "content:update:apply": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-content-seo.ts apply",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
