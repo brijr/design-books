@@ -1,8 +1,10 @@
 import "../globals.css";
+import "lenis/dist/lenis.css";
 
 import { Manrope as Font } from "next/font/google";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import { SmoothScroll } from "@/components/smooth-scroll";
 
 import {
   HOME_TITLE,
@@ -54,6 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={font.className}>
       <body className="min-h-screen text-zinc-950 bg-zinc-50 selection:bg-orange-200">
+        <SmoothScroll />
         <main className="p-6 sm:p-12 grid gap-12 max-w-7xl">
           <Header />
           {children}
