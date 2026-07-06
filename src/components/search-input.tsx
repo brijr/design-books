@@ -18,7 +18,7 @@ export function SearchInput({ defaultValue }: { defaultValue?: string }) {
       }
       return params.toString();
     },
-    [searchParams]
+    [searchParams],
   );
 
   const [debouncedCallback] = useDebounce((value: string) => {
@@ -30,6 +30,7 @@ export function SearchInput({ defaultValue }: { defaultValue?: string }) {
     <input
       type="text"
       name="search"
+      aria-label="Search design books"
       placeholder="Search"
       defaultValue={defaultValue}
       onChange={(e) => debouncedCallback(e.target.value)}
