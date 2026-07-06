@@ -71,14 +71,6 @@ export default async function Home({
           </h1>
           <p className="text-zinc-400">
             Product, interaction, visual design, usability, systems, and craft.
-            Curated by{" "}
-            <a className="link" href="https://bridger.to">
-              Bridger Tower
-            </a>{" "}
-            at{" "}
-            <a className="link" href="https://wipdes.com">
-              WIP
-            </a>
           </p>
         </div>
 
