@@ -51,6 +51,10 @@ const BOOK_LINKS: BookLinkSeed[] = [
     slug: "thinking-in-systems",
     link: "https://www.amazon.com/Thinking-Systems-Donella-H-Meadows/dp/1603580557",
   },
+  {
+    slug: "virgil-abloh-figures-of-speech",
+    link: "https://www.amazon.com/Virgil-Abloh-Figures-Michael-Darling/dp/1636810748",
+  },
 ];
 
 function isHttpUrl(value: string | null | undefined) {
