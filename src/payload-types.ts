@@ -171,7 +171,7 @@ export interface Media {
  */
 export interface Book {
   id: number;
-  image: number | Media;
+  image?: (number | null) | Media;
   title: string;
   author: string;
   slug: string;

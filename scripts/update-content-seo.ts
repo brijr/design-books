@@ -655,7 +655,10 @@ async function main() {
     const entry = CONTENT[slug];
 
     if (!entry) {
-      throw new Error(`No content entry for book ${book.title} (${book.slug})`);
+      console.log(
+        `[skip] no managed content entry for ${book.title} (${slug})`,
+      );
+      continue;
     }
 
     seenSlugs.add(slug);

@@ -13,7 +13,6 @@ export const Books: CollectionConfig = {
       name: "image",
       type: "upload",
       relationTo: "media",
-      required: true,
     },
     {
       name: "title",
