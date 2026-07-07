@@ -35,6 +35,19 @@ function richTextLength(value: unknown): number {
   return length;
 }
 
+function isHttpUrl(value: string | null | undefined) {
+  if (!value) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 async function main() {
   const payload = await getPayload({ config });
   const [bookResult, topicResult] = await Promise.all([
@@ -79,6 +92,10 @@ async function main() {
 
     if (getBookTopics(book).length < 1) {
       errors.push(`${slug} has no topics`);
+    }
+
+    if (!isHttpUrl(book.link)) {
+      errors.push(`${slug} has no valid purchase link`);
     }
   }
 
