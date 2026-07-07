@@ -237,6 +237,7 @@ export function bookJsonLd(book: Book) {
   const image = getBookImageMetadata(book);
   const url = bookUrl(book);
   const topics = getBookTopics(book);
+  const numberOfPages = book.pages ? Number.parseInt(book.pages, 10) : null;
 
   return {
     "@context": "https://schema.org",
@@ -251,6 +252,15 @@ export function bookJsonLd(book: Book) {
         })),
         description: book.description,
         image: image?.url,
+        isbn: book.isbn || undefined,
+        publisher: book.publisher
+          ? {
+              "@type": "Organization",
+              name: book.publisher,
+            }
+          : undefined,
+        datePublished: book.year || undefined,
+        numberOfPages: numberOfPages || undefined,
         url,
         mainEntityOfPage: url,
         about: topics.map((topic) => topic.title),
