@@ -5,6 +5,7 @@ import { Manrope as Font } from "next/font/google";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { BookSubmissionDialog } from "@/components/book-submission-dialog";
 
 import {
   HOME_TITLE,
@@ -70,13 +71,14 @@ export default function RootLayout({
 
 const Header = () => {
   return (
-    <nav>
+    <nav className="flex items-center justify-between gap-4">
       <h2 className="font-medium">
         <Link href="/" className="group">
           Design Books
           <span className="hidden group-hover:inline-block"> *</span>
         </Link>
       </h2>
+      <BookSubmissionDialog />
     </nav>
   );
 };

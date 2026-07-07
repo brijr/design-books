@@ -2,11 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/cn";
-import { getBookImage } from "@/lib/seo";
-import type { Book } from "@/payload-types";
+import type { Book, Media } from "@/payload-types";
 
-export function BookCard({ book }: { book: Book }) {
-  const cover = getBookImage(book);
+type BookCardImage = Pick<Media, "url" | "width" | "height" | "alt">;
+
+export type BookCardBook = Pick<
+  Book,
+  "id" | "title" | "author" | "slug" | "link"
+> & {
+  image?: number | BookCardImage | null;
+};
+
+export function BookCard({ book }: { book: BookCardBook }) {
+  const cover = typeof book.image === "object" ? book.image : null;
 
   return (
     <div className="relative group" key={book.id}>

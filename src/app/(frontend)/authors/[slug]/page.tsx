@@ -17,6 +17,7 @@ import {
 import { getBookCountLabel } from "@/lib/taxonomy";
 
 export const revalidate = 1800;
+export const dynamicParams = false;
 
 type Props = {
   params: Promise<{ slug: string }>;
