@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "content:add-recommendations": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/add-recommended-books.ts apply",
     "content:audit": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/audit-content-seo.ts",
     "content:update": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-content-seo.ts",
     "content:update:apply": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-content-seo.ts apply",
