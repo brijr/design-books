@@ -51,6 +51,12 @@ const TOPICS: TopicSeed[] = [
     description:
       "Books about journeys, backstage systems, service ecosystems, facilitation, and cross-channel experiences.",
   },
+  {
+    slug: "systems-thinking",
+    title: "Systems Thinking",
+    description:
+      "Books about feedback loops, leverage points, constraints, and the behavior of complex systems.",
+  },
 ];
 
 const BOOKS: BookSeed[] = [
@@ -85,6 +91,7 @@ const BOOKS: BookSeed[] = [
     topics: ["design-theory", "product-design", "professional-practice"],
     emphasis:
       "adds ethical weight to the collection by asking what design work is for and who it should serve",
+    link: "https://www.thamesandhudson.com/products/design-for-the-real-world",
   },
   {
     title: "The Art of Looking Sideways",
@@ -117,6 +124,7 @@ const BOOKS: BookSeed[] = [
     topics: ["design-systems", "product-design", "design-theory"],
     emphasis:
       "shows how reusable patterns can organize complex design problems without reducing them to rigid formulas",
+    link: "https://www.patternlanguage.com/bookstore/pattern-language.html",
   },
   {
     title: "Notes on the Synthesis of Form",
@@ -127,6 +135,7 @@ const BOOKS: BookSeed[] = [
     topics: ["design-theory", "design-systems"],
     emphasis:
       "gives designers a sharper way to think about fit between form, context, constraints, and structure",
+    link: "https://www.patternlanguage.com/bookstore/synthesis-of-form.html",
   },
   {
     title: "About Face",
@@ -137,6 +146,7 @@ const BOOKS: BookSeed[] = [
     topics: ["product-design", "usability-and-ux"],
     emphasis:
       "adds a heavyweight interaction design reference for connecting user goals to screens, flows, and behavior",
+    link: "https://www.amazon.com/About-Face-Essentials-Interaction-Design/dp/1118766571",
   },
   {
     title: "Designing Interfaces",
@@ -147,6 +157,7 @@ const BOOKS: BookSeed[] = [
     topics: ["usability-and-ux", "product-design", "design-systems"],
     emphasis:
       "turns interface knowledge into reusable patterns that help teams make consistent product decisions",
+    link: "https://www.amazon.com/Designing-Interfaces-Patterns-Effective-Interaction/dp/1492051969",
   },
   {
     title: "The User Experience Team of One",
@@ -212,6 +223,7 @@ const BOOKS: BookSeed[] = [
     topics: ["inclusive-design", "product-design"],
     emphasis:
       "connects accessibility and inclusion to product design decisions instead of treating them as late-stage checks",
+    link: "https://mitpress.mit.edu/9780262539487/mismatch/",
   },
   {
     title: "Design Justice",
@@ -222,6 +234,7 @@ const BOOKS: BookSeed[] = [
     topics: ["inclusive-design", "design-theory"],
     emphasis:
       "adds a necessary justice lens by asking who participates in design and who bears its consequences",
+    link: "https://mitpress.mit.edu/9780262043458/design-justice/",
   },
   {
     title: "Design Systems",
@@ -268,6 +281,17 @@ const BOOKS: BookSeed[] = [
       "sharpens the professional practice shelf with blunt guidance on clients, money, responsibility, and trust",
     link: "https://abookapart.com/products/design-is-a-job",
   },
+  {
+    title: "Thinking in Systems",
+    author: "Donella H. Meadows",
+    slug: "thinking-in-systems",
+    description:
+      "Donella Meadows explains feedback loops, stocks, flows, delays, and leverage points for understanding complex systems.",
+    topics: ["systems-thinking", "design-theory", "product-design"],
+    emphasis:
+      "gives designers a practical language for seeing feedback loops, constraints, leverage points, and unintended consequences",
+    link: "https://www.amazon.com/Thinking-Systems-Donella-H-Meadows/dp/1603580557",
+  },
 ];
 
 const TOPIC_AUDIENCE: Record<string, string> = {
@@ -282,6 +306,7 @@ const TOPIC_AUDIENCE: Record<string, string> = {
   "product-design": "product designers, founders, and product teams",
   "professional-practice": "freelancers, studio designers, and design leads",
   "service-design": "service designers, product teams, and facilitators",
+  "systems-thinking": "designers, product leaders, and systems-minded teams",
   "usability-and-ux": "UX designers, product teams, and engineers",
   "visual-perception": "visual designers, researchers, and educators",
 };
@@ -300,6 +325,8 @@ const TOPIC_TAKEAWAY: Record<string, string> = {
   "professional-practice":
     "stronger client process, facilitation, and judgment",
   "service-design": "clearer journeys, touchpoints, and cross-channel systems",
+  "systems-thinking":
+    "clearer models of feedback loops, leverage points, delays, and system behavior",
   "usability-and-ux": "clearer interfaces and better diagnosis of friction",
   "visual-perception": "a sharper understanding of how people read visual form",
 };
