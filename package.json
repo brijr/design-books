@@ -8,6 +8,7 @@
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "content:add-recommendations": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/add-recommended-books.ts apply",
     "content:audit": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/audit-content-seo.ts",
+    "content:update-covers": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-book-covers.ts apply",
     "content:update": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-content-seo.ts",
     "content:update:apply": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/update-content-seo.ts apply",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
