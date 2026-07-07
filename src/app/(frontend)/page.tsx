@@ -1,7 +1,9 @@
 import { queryAllBooks } from "@/lib/data";
-import { SearchInput } from "@/components/search-input";
-import { BookCard } from "@/components/book-card";
-import Link from "next/link";
+import {
+  HomeBookBrowser,
+  type HomeBook,
+  type HomeTopic,
+} from "@/components/home-book-browser";
 import { getBookTopics } from "@/lib/taxonomy";
 import {
   collectionJsonLd,
@@ -12,8 +14,9 @@ import {
 } from "@/lib/seo";
 
 import type { Metadata } from "next";
-import type { Book, Topic } from "@/payload-types";
+import type { Book, Media, Topic } from "@/payload-types";
 
+export const dynamic = "force-static";
 export const revalidate = 600;
 
 export const metadata: Metadata = {
@@ -49,16 +52,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ search?: string; sort?: string; topic?: string }>;
-}) {
-  const { search, sort, topic } = await searchParams;
+export default async function Home() {
   const allBooks = await queryAllBooks();
   const topics = getHomepageTopics(allBooks);
-  const books = sortBooks(filterBooks(allBooks, { search, topic }), sort);
-  const jsonLd = collectionJsonLd(books);
+  const books = getHomeBooks(allBooks);
+  const jsonLd = collectionJsonLd(allBooks);
 
   return (
     <>
@@ -77,113 +75,13 @@ export default async function Home({
           </p>
         </div>
 
-        <div className="grid grid-cols-[1fr_auto] items-center gap-4">
-          <SearchInput defaultValue={search} />
-          <p className="text-zinc-400">
-            {books.length} {books.length === 1 ? "book" : "books"}
-          </p>
-        </div>
-
-        <div className="grid gap-4">
-          <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-            <Link
-              href={homeHref({ search, sort })}
-              className={!topic ? "link" : "text-zinc-400 hover:text-current"}
-            >
-              All
-            </Link>
-            {topics.map((bookTopic) => (
-              <Link
-                key={bookTopic.slug}
-                href={homeHref({ search, sort, topic: bookTopic.slug })}
-                className={
-                  topic === bookTopic.slug
-                    ? "link"
-                    : "text-zinc-400 hover:text-current"
-                }
-              >
-                {bookTopic.title}
-              </Link>
-            ))}
-          </div>
-
-          <div className="flex gap-4 text-sm">
-            <Link
-              href={homeHref({ search, topic })}
-              className={
-                sort !== "recent" ? "link" : "text-zinc-400 hover:text-current"
-              }
-            >
-              A-Z
-            </Link>
-            <Link
-              href={homeHref({ search, topic, sort: "recent" })}
-              className={
-                sort === "recent" ? "link" : "text-zinc-400 hover:text-current"
-              }
-            >
-              Recently added
-            </Link>
-          </div>
-        </div>
-
-        {books.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {books.map((book) => (
-              <BookCard key={book.id} book={book} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-zinc-400">No books found</p>
-        )}
+        <HomeBookBrowser books={books} topics={topics} />
       </section>
     </>
   );
 }
 
-function filterBooks(
-  books: Book[],
-  {
-    search,
-    topic,
-  }: {
-    search?: string;
-    topic?: string;
-  },
-) {
-  const normalizedSearch = search?.trim().toLowerCase();
-
-  return books.filter((book) => {
-    const topics = getBookTopics(book);
-    const matchesTopic =
-      !topic || topics.some((bookTopic) => bookTopic.slug === topic);
-    const matchesSearch =
-      !normalizedSearch ||
-      [
-        book.title,
-        book.author,
-        book.description,
-        ...topics.map((bookTopic) => bookTopic.title),
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedSearch);
-
-    return matchesTopic && matchesSearch;
-  });
-}
-
-function sortBooks(books: Book[], sort?: string) {
-  return [...books].sort((a, b) => {
-    if (sort === "recent") {
-      return Date.parse(b.createdAt) - Date.parse(a.createdAt);
-    }
-
-    return a.title.localeCompare(b.title);
-  });
-}
-
-function getHomepageTopics(books: Book[]) {
+function getHomepageTopics(books: Book[]): HomeTopic[] {
   const topics = new Map<string, Topic>();
 
   for (const book of books) {
@@ -192,32 +90,54 @@ function getHomepageTopics(books: Book[]) {
     }
   }
 
-  return [...topics.values()].sort((a, b) => a.title.localeCompare(b.title));
+  return [...topics.values()]
+    .map(toHomeTopic)
+    .sort((a, b) => a.title.localeCompare(b.title));
 }
 
-function homeHref({
-  search,
-  sort,
-  topic,
-}: {
-  search?: string;
-  sort?: string;
-  topic?: string;
-}) {
-  const params = new URLSearchParams();
+function getHomeBooks(books: Book[]): HomeBook[] {
+  return books.map(
+    ({
+      id,
+      title,
+      author,
+      slug,
+      description,
+      link,
+      createdAt,
+      image,
+      topics,
+    }) => ({
+      id,
+      title,
+      author,
+      slug,
+      description,
+      link,
+      createdAt,
+      image: getHomeBookImage(image),
+      topics: getBookTopics({ topics }).map(toHomeTopic),
+    }),
+  );
+}
 
-  if (search) {
-    params.set("search", search);
+function toHomeTopic(topic: Topic): HomeTopic {
+  return {
+    id: topic.id,
+    slug: topic.slug,
+    title: topic.title,
+  };
+}
+
+function getHomeBookImage(image: Book["image"]) {
+  if (!image || typeof image !== "object") {
+    return image || null;
   }
 
-  if (topic) {
-    params.set("topic", topic);
-  }
-
-  if (sort === "recent") {
-    params.set("sort", sort);
-  }
-
-  const query = params.toString();
-  return query ? `/?${query}` : "/";
+  return {
+    url: image.url,
+    width: image.width,
+    height: image.height,
+    alt: image.alt,
+  } satisfies Pick<Media, "url" | "width" | "height" | "alt">;
 }

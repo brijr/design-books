@@ -35,37 +35,6 @@ export const queryAllBooks = cache(async () => {
   return result.docs || [];
 });
 
-export const searchBooks = cache(async ({ query }: { query: string }) => {
-  const payload = await getPayload({ config: configPromise });
-
-  const result = await payload.find({
-    collection: "books",
-    depth: 2,
-    pagination: false,
-    where: {
-      or: [
-        {
-          title: {
-            contains: query,
-          },
-        },
-        {
-          author: {
-            contains: query,
-          },
-        },
-        {
-          description: {
-            contains: query,
-          },
-        },
-      ],
-    },
-  });
-
-  return result.docs || [];
-});
-
 export const queryAllTopics = cache(async () => {
   const payload = await getPayload({ config: configPromise });
 

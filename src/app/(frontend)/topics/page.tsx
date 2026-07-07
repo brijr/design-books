@@ -12,6 +12,7 @@ import {
 } from "@/lib/seo";
 
 export const revalidate = 1800;
+export const dynamic = "force-static";
 
 const description =
   "Browse design books by topic, including typography, usability, graphic design, brand identity, design systems, and creative practice.";

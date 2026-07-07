@@ -12,6 +12,7 @@ import {
 } from "@/lib/seo";
 
 export const revalidate = 1800;
+export const dynamic = "force-static";
 
 const description =
   "Browse the authors represented in the Design Books reading list, from usability and interaction design to typography and brand identity.";

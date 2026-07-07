@@ -25,6 +25,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const revalidate = 1800;
+export const dynamicParams = false;
 
 type Props = {
   params: Promise<{ slug: string }>;

@@ -33,7 +33,7 @@ export function authorAbsoluteUrl(slug: string) {
   return absoluteUrl(`/authors/${slug}`);
 }
 
-export function getBookImage(book: Book): Media | null {
+export function getBookImage(book: Pick<Book, "image">): Media | null {
   return typeof book.image === "object" ? book.image : null;
 }
 
