@@ -68,8 +68,8 @@ async function main() {
   const errors: string[] = [];
   const descriptions = new Map<string, string>();
 
-  if (books.length !== 65) {
-    errors.push(`Expected 65 books, found ${books.length}`);
+  if (books.length !== 66) {
+    errors.push(`Expected 66 books, found ${books.length}`);
   }
 
   for (const book of books) {

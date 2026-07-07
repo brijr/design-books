@@ -292,6 +292,22 @@ const BOOKS: BookSeed[] = [
       "gives designers a practical language for seeing feedback loops, constraints, leverage points, and unintended consequences",
     link: "https://www.amazon.com/Thinking-Systems-Donella-H-Meadows/dp/1603580557",
   },
+  {
+    title: "Virgil Abloh: Figures of Speech",
+    author: "Michael Darling, Virgil Abloh",
+    slug: "virgil-abloh-figures-of-speech",
+    description:
+      "A major exhibition catalog tracing Virgil Abloh's cross-disciplinary work across fashion, art, branding, and design.",
+    topics: [
+      "brand-identity",
+      "design-history",
+      "graphic-design",
+      "creative-practice",
+    ],
+    emphasis:
+      "documents how Abloh moved between fashion, art, branding, objects, and visual systems with a highly referential design language",
+    link: "https://www.amazon.com/Virgil-Abloh-Figures-Michael-Darling/dp/1636810748",
+  },
 ];
 
 const TOPIC_AUDIENCE: Record<string, string> = {

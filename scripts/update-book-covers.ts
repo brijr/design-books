@@ -128,6 +128,13 @@ const COVERS: CoverSeed[] = [
     imageUrl:
       "https://covers.openlibrary.org/b/isbn/1603580557-L.jpg?default=false",
   },
+  {
+    slug: "virgil-abloh-figures-of-speech",
+    title: "Virgil Abloh: Figures of Speech",
+    filename: "virgil-abloh-figures-of-speech-book-cover.jpg",
+    imageUrl:
+      "https://pontheonlinestore.com/cdn/shop/products/Figures_Of_Speech_1.jpg?v=1674325560",
+  },
 ];
 
 function coverUrl(coverId: number) {
