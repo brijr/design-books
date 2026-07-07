@@ -48,6 +48,27 @@ function isHttpUrl(value: string | null | undefined) {
   }
 }
 
+function hasText(value: string | null | undefined) {
+  return Boolean(value?.trim());
+}
+
+function isFourDigitYear(value: string | null | undefined) {
+  return Boolean(value && /^\d{4}$/.test(value));
+}
+
+function isPositiveInteger(value: string | null | undefined) {
+  return Boolean(value && /^[1-9]\d*$/.test(value));
+}
+
+function isIsbn(value: string | null | undefined) {
+  if (!value) {
+    return false;
+  }
+
+  const normalized = value.replaceAll("-", "");
+  return /^\d{10}$/.test(normalized) || /^\d{13}$/.test(normalized);
+}
+
 async function main() {
   const payload = await getPayload({ config });
   const [bookResult, topicResult] = await Promise.all([
@@ -96,6 +117,22 @@ async function main() {
 
     if (!isHttpUrl(book.link)) {
       errors.push(`${slug} has no valid purchase link`);
+    }
+
+    if (!hasText(book.publisher)) {
+      errors.push(`${slug} has no publisher`);
+    }
+
+    if (!isFourDigitYear(book.year)) {
+      errors.push(`${slug} has no valid publication year`);
+    }
+
+    if (!isPositiveInteger(book.pages)) {
+      errors.push(`${slug} has no valid page count`);
+    }
+
+    if (!isIsbn(book.isbn)) {
+      errors.push(`${slug} has no valid ISBN`);
     }
   }
 

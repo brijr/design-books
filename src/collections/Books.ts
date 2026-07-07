@@ -60,6 +60,22 @@ export const Books: CollectionConfig = {
       required: true,
     },
     {
+      name: "publisher",
+      type: "text",
+    },
+    {
+      name: "year",
+      type: "text",
+    },
+    {
+      name: "pages",
+      type: "text",
+    },
+    {
+      name: "isbn",
+      type: "text",
+    },
+    {
       name: "summary",
       type: "richText",
     },

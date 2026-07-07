@@ -176,6 +176,10 @@ export interface Book {
   author: string;
   slug: string;
   description: string;
+  publisher?: string | null;
+  year?: string | null;
+  pages?: string | null;
+  isbn?: string | null;
   summary?: {
     root: {
       type: string;
@@ -340,6 +344,10 @@ export interface BooksSelect<T extends boolean = true> {
   author?: T;
   slug?: T;
   description?: T;
+  publisher?: T;
+  year?: T;
+  pages?: T;
+  isbn?: T;
   summary?: T;
   topics?: T;
   link?: T;

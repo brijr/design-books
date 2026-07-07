@@ -2,6 +2,7 @@ import { queryAllBooks, queryBookBySlug } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import { cn } from "@/lib/cn";
+import { BookCard } from "@/components/book-card";
 import Link from "next/link";
 import {
   bookJsonLd,
@@ -19,6 +20,7 @@ import {
   splitAuthors,
   topicUrl,
 } from "@/lib/taxonomy";
+import type { Book } from "@/payload-types";
 import type { Metadata } from "next";
 import Image from "next/image";
 
@@ -92,7 +94,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-  const book = await queryBookBySlug({ slug });
+  const [book, allBooks] = await Promise.all([
+    queryBookBySlug({ slug }),
+    queryAllBooks(),
+  ]);
 
   if (!book) {
     return notFound();
@@ -101,6 +106,8 @@ export default async function Page({ params }: Props) {
   const cover = getBookImage(book);
   const authors = splitAuthors(book.author);
   const topics = getBookTopics(book);
+  const metadata = getBookMetadata(book);
+  const relatedBooks = getRelatedBooks(book, allBooks);
   const jsonLd = bookJsonLd(book);
 
   return (
@@ -127,6 +134,9 @@ export default async function Page({ params }: Props) {
 
       <div className="grid gap-4 max-w-prose">
         <p>{book.description}</p>
+        {metadata.length > 0 && (
+          <p className="text-sm text-zinc-400">{metadata.join(" · ")}</p>
+        )}
         {topics.length > 0 && (
           <p className="text-sm text-zinc-400">
             Topics:{" "}
@@ -183,6 +193,46 @@ export default async function Page({ params }: Props) {
           <RichText data={book.summary} />
         </div>
       )}
+
+      {relatedBooks.length > 0 && (
+        <section className="grid gap-6">
+          <h2 className="font-medium">Related books</h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedBooks.map((relatedBook) => (
+              <BookCard key={relatedBook.id} book={relatedBook} />
+            ))}
+          </div>
+        </section>
+      )}
     </article>
   );
+}
+
+function getBookMetadata(book: Book) {
+  return [
+    book.publisher,
+    book.year,
+    book.pages ? `${book.pages} pages` : null,
+    book.isbn ? `ISBN ${book.isbn}` : null,
+  ].filter(Boolean);
+}
+
+function getRelatedBooks(book: Book, books: Book[]) {
+  const topicIds = new Set(getBookTopics(book).map((topic) => topic.id));
+
+  return books
+    .filter((candidate) => candidate.id !== book.id)
+    .map((candidate) => {
+      const score = getBookTopics(candidate).filter((topic) =>
+        topicIds.has(topic.id),
+      ).length;
+
+      return { book: candidate, score };
+    })
+    .filter(({ score }) => score > 0)
+    .sort(
+      (a, b) => b.score - a.score || a.book.title.localeCompare(b.book.title),
+    )
+    .slice(0, 3)
+    .map(({ book }) => book);
 }
