@@ -121,6 +121,13 @@ const COVERS: CoverSeed[] = [
     title: "Design Is a Job",
     coverId: 7246307,
   },
+  {
+    slug: "thinking-in-systems",
+    title: "Thinking in Systems",
+    filename: "thinking-in-systems-open-library-cover-1603580557.jpg",
+    imageUrl:
+      "https://covers.openlibrary.org/b/isbn/1603580557-L.jpg?default=false",
+  },
 ];
 
 function coverUrl(coverId: number) {

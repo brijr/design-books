@@ -47,6 +47,10 @@ const BOOK_LINKS: BookLinkSeed[] = [
     slug: "notes-on-the-synthesis-of-form",
     link: "https://www.patternlanguage.com/bookstore/synthesis-of-form.html",
   },
+  {
+    slug: "thinking-in-systems",
+    link: "https://www.amazon.com/Thinking-Systems-Donella-H-Meadows/dp/1603580557",
+  },
 ];
 
 function isHttpUrl(value: string | null | undefined) {
