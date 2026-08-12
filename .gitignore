@@ -42,3 +42,6 @@ yarn-error.log*
 .env*
 
 /media
+
+# tldr daemon cache
+.tldr/
