@@ -1,0 +1,525 @@
+{
+  "edges": [
+    {
+      "from_file": "scripts/add-recommended-books.ts",
+      "from_func": "validateSeeds",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "slugify"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "isHttpUrl"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "bookUrl"
+    },
+    {
+      "from_file": "scripts/update-book-links.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-book-links.ts",
+      "to_func": "isHttpUrl"
+    },
+    {
+      "from_file": "scripts/update-book-covers.ts",
+      "from_func": "imageUrlFor",
+      "to_file": "scripts/update-book-covers.ts",
+      "to_func": "coverUrl"
+    },
+    {
+      "from_file": "src/app/(frontend)/page.tsx",
+      "from_func": "getHomepageTopics",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "getBookTopics"
+    },
+    {
+      "from_file": "src/app/(frontend)/book-submissions/route.ts",
+      "from_func": "validateSubmission",
+      "to_file": "src/app/(frontend)/book-submissions/route.ts",
+      "to_func": "isHttpUrl"
+    },
+    {
+      "from_file": "src/components/home-book-browser.tsx",
+      "from_func": "handleTopic",
+      "to_file": "src/components/home-book-browser.tsx",
+      "to_func": "updateFilters"
+    },
+    {
+      "from_file": "src/lib/taxonomy.ts",
+      "from_func": "authorSlug",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "slugify"
+    },
+    {
+      "from_file": "src/lib/taxonomy.ts",
+      "from_func": "getAuthorSummaries",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "authorSlug"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "richTextLength",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "visit"
+    },
+    {
+      "from_file": "src/app/(frontend)/topics/page.tsx",
+      "from_func": "TopicsPage",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "topicAbsoluteUrl"
+    },
+    {
+      "from_file": "src/app/(frontend)/page.tsx",
+      "from_func": "Home",
+      "to_file": "src/app/(frontend)/page.tsx",
+      "to_func": "getHomepageTopics"
+    },
+    {
+      "from_file": "src/app/(frontend)/book-submissions/route.ts",
+      "from_func": "normalizeSubmission",
+      "to_file": "src/app/(frontend)/book-submissions/route.ts",
+      "to_func": "getText"
+    },
+    {
+      "from_file": "scripts/add-recommended-books.ts",
+      "from_func": "main",
+      "to_file": "scripts/add-recommended-books.ts",
+      "to_func": "validateSeeds"
+    },
+    {
+      "from_file": "src/app/(frontend)/page.tsx",
+      "from_func": "getHomeBooks",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "getBookTopics"
+    },
+    {
+      "from_file": "src/app/(frontend)/page.tsx",
+      "from_func": "Home",
+      "to_file": "src/app/(frontend)/page.tsx",
+      "to_func": "getHomeBooks"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "getAuthorSummaries"
+    },
+    {
+      "from_file": "scripts/update-book-covers.ts",
+      "from_func": "downloadCover",
+      "to_file": "scripts/update-book-covers.ts",
+      "to_func": "filenameFor"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "richText",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "heading"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "validateContent"
+    },
+    {
+      "from_file": "scripts/update-book-covers.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-book-covers.ts",
+      "to_func": "imageUrlFor"
+    },
+    {
+      "from_file": "src/app/(frontend)/authors/page.tsx",
+      "from_func": "AuthorsPage",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "authorAbsoluteUrl"
+    },
+    {
+      "from_file": "src/lib/taxonomy.ts",
+      "from_func": "getAuthorSummaries",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "splitAuthors"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionPageJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "bookUrl"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "richText",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "unique"
+    },
+    {
+      "from_file": "src/lib/taxonomy.ts",
+      "from_func": "authorUrl",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "authorSlug"
+    },
+    {
+      "from_file": "src/app/(frontend)/topics/page.tsx",
+      "from_func": "TopicsPage",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "getBookTopics"
+    },
+    {
+      "from_file": "src/app/sitemap.ts",
+      "from_func": "sitemap",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "topicAbsoluteUrl"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "bookJsonLd",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "splitAuthors"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "bookJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "bookUrl"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "bookMetadataTitle"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "getBookImageMetadata",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "getBookImage"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionPageJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "src/components/home-book-browser.tsx",
+      "from_func": "handleSort",
+      "to_file": "src/components/home-book-browser.tsx",
+      "to_func": "updateFilters"
+    },
+    {
+      "from_file": "src/app/(frontend)/book-submissions/route.ts",
+      "from_func": "POST",
+      "to_file": "src/app/(frontend)/book-submissions/route.ts",
+      "to_func": "getText"
+    },
+    {
+      "from_file": "src/app/(frontend)/page.tsx",
+      "from_func": "getHomeBooks",
+      "to_file": "src/app/(frontend)/page.tsx",
+      "to_func": "getHomeBookImage"
+    },
+    {
+      "from_file": "src/app/(frontend)/[slug]/page.tsx",
+      "from_func": "generateMetadata",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "bookUrl"
+    },
+    {
+      "from_file": "src/app/(frontend)/topics/[slug]/page.tsx",
+      "from_func": "generateMetadata",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "topicAbsoluteUrl"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "validateContent",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "topicBySlug"
+    },
+    {
+      "from_file": "src/app/(frontend)/book-submissions/route.ts",
+      "from_func": "POST",
+      "to_file": "src/app/(frontend)/book-submissions/route.ts",
+      "to_func": "validateSubmission"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "bookJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "src/app/(frontend)/book-submissions/route.ts",
+      "from_func": "POST",
+      "to_file": "src/app/(frontend)/book-submissions/route.ts",
+      "to_func": "readPayload"
+    },
+    {
+      "from_file": "scripts/add-recommended-books.ts",
+      "from_func": "richText",
+      "to_file": "scripts/add-recommended-books.ts",
+      "to_func": "heading"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "hasText"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "bookJsonLd",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "getBookTopics"
+    },
+    {
+      "from_file": "src/app/sitemap.ts",
+      "from_func": "sitemap",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "authorAbsoluteUrl"
+    },
+    {
+      "from_file": "src/app/(frontend)/authors/page.tsx",
+      "from_func": "AuthorsPage",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "collectionIndexJsonLd"
+    },
+    {
+      "from_file": "src/app/(frontend)/book-submissions/route.ts",
+      "from_func": "POST",
+      "to_file": "src/app/(frontend)/book-submissions/route.ts",
+      "to_func": "normalizeSubmission"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "richText"
+    },
+    {
+      "from_file": "scripts/update-book-covers.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-book-covers.ts",
+      "to_func": "downloadCover"
+    },
+    {
+      "from_file": "scripts/add-recommended-books.ts",
+      "from_func": "richText",
+      "to_file": "scripts/add-recommended-books.ts",
+      "to_func": "unique"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "getBookImageMetadata"
+    },
+    {
+      "from_file": "src/components/home-book-browser.tsx",
+      "from_func": "handleSearch",
+      "to_file": "src/components/home-book-browser.tsx",
+      "to_func": "updateFilters"
+    },
+    {
+      "from_file": "src/app/(frontend)/topics/page.tsx",
+      "from_func": "TopicsPage",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "collectionIndexJsonLd"
+    },
+    {
+      "from_file": "scripts/update-book-metadata.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-book-metadata.ts",
+      "to_func": "hasMetadata"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionIndexJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "src/app/(frontend)/book-submissions/route.ts",
+      "from_func": "POST",
+      "to_file": "src/app/(frontend)/book-submissions/route.ts",
+      "to_func": "buildDiscordMessage"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "bookJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "getBookImageMetadata"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "src/lib/taxonomy.ts",
+      "to_func": "getBookTopics"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "collectionPageJsonLd",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "bookMetadataTitle"
+    },
+    {
+      "from_file": "src/app/(frontend)/[slug]/page.tsx",
+      "from_func": "generateMetadata",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "getBookImageMetadata"
+    },
+    {
+      "from_file": "src/app/sitemap.ts",
+      "from_func": "sitemap",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "getBookImageMetadata",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "topicAbsoluteUrl",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "scripts/add-recommended-books.ts",
+      "from_func": "main",
+      "to_file": "scripts/add-recommended-books.ts",
+      "to_func": "richText"
+    },
+    {
+      "from_file": "src/app/(frontend)/authors/[slug]/page.tsx",
+      "from_func": "generateMetadata",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "authorAbsoluteUrl"
+    },
+    {
+      "from_file": "scripts/update-book-covers.ts",
+      "from_func": "downloadCover",
+      "to_file": "scripts/update-book-covers.ts",
+      "to_func": "imageUrlFor"
+    },
+    {
+      "from_file": "src/app/(frontend)/authors/page.tsx",
+      "from_func": "AuthorsPage",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "isPositiveInteger"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "visit",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "visit"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "richText",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "topicBySlug"
+    },
+    {
+      "from_file": "src/app/(frontend)/page.tsx",
+      "from_func": "Home",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "collectionJsonLd"
+    },
+    {
+      "from_file": "src/app/(frontend)/topics/page.tsx",
+      "from_func": "TopicsPage",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "src/app/(frontend)/[slug]/page.tsx",
+      "from_func": "generateMetadata",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "bookMetadataTitle"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "isFourDigitYear"
+    },
+    {
+      "from_file": "scripts/update-book-covers.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-book-covers.ts",
+      "to_func": "filenameFor"
+    },
+    {
+      "from_file": "src/components/smooth-scroll.tsx",
+      "from_func": "SmoothScroll",
+      "to_file": "src/components/smooth-scroll.tsx",
+      "to_func": "syncPreference"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "normalizeSlug"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "bookUrl",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "richTextLength"
+    },
+    {
+      "from_file": "scripts/audit-content-seo.ts",
+      "from_func": "main",
+      "to_file": "scripts/audit-content-seo.ts",
+      "to_func": "isIsbn"
+    },
+    {
+      "from_file": "src/lib/seo.ts",
+      "from_func": "authorAbsoluteUrl",
+      "to_file": "src/lib/seo.ts",
+      "to_func": "absoluteUrl"
+    },
+    {
+      "from_file": "scripts/add-recommended-books.ts",
+      "from_func": "richText",
+      "to_file": "scripts/add-recommended-books.ts",
+      "to_func": "paragraph"
+    },
+    {
+      "from_file": "scripts/update-content-seo.ts",
+      "from_func": "richText",
+      "to_file": "scripts/update-content-seo.ts",
+      "to_func": "paragraph"
+    }
+  ],
+  "languages": [
+    "javascript",
+    "typescript"
+  ],
+  "timestamp": 1786561696.6299431
+}
