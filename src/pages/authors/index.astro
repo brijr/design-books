@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import { authorUrl, getAuthorSummaries, getBookCountLabel } from "../../lib/taxonomy";
+import {
+  absoluteUrl,
+  authorAbsoluteUrl,
+  collectionIndexJsonLd,
+  serializeJsonLd,
+  SITE_NAME,
+} from "../../lib/seo";
+
+const description =
+  "Browse the authors represented in the Design Books reading list, from usability and interaction design to typography and brand identity.";
+
+const books = await getCollection("books");
+const authors = getAuthorSummaries(books);
+
+const jsonLd = collectionIndexJsonLd({
+  id: "authors",
+  name: "Design Book Authors",
+  url: absoluteUrl("/authors"),
+  description,
+  items: authors.map((author) => ({
+    name: author.name,
+    url: authorAbsoluteUrl(author.slug),
+  })),
+});
+---
+
+<Layout title={`Authors | ${SITE_NAME}`} description={description} path="/authors">
+  <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />
+
+  <section class="grid gap-12">
+    <div>
+      <h1 class="font-medium">Authors</h1>
+      <p class="text-zinc-400">{description}</p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        authors.map((author) => (
+          <a
+            href={authorUrl(author.name)}
+            class="p-8 relative flex aspect-square flex-col justify-end rounded-xl border border-zinc-200 bg-zinc-100 transition-colors duration-300 hover:bg-zinc-200"
+          >
+            <h2 class="font-medium">{author.name}</h2>
+            <p class="text-sm text-zinc-400">{getBookCountLabel(author.count)}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

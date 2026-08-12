@@ -1,0 +1,70 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import BookCard from "../../components/BookCard.astro";
+import {
+  collectionPageJsonLd,
+  serializeJsonLd,
+  SITE_NAME,
+  topicAbsoluteUrl,
+} from "../../lib/seo";
+import { getBookCountLabel, getBookTopics } from "../../lib/taxonomy";
+
+export async function getStaticPaths() {
+  const topics = await getCollection("topics");
+
+  return topics.map((topic) => ({
+    params: { slug: topic.id },
+    props: { topic },
+  }));
+}
+
+const { topic } = Astro.props;
+
+const allBooks = await getCollection("books");
+const bookTopicPairs = await Promise.all(
+  allBooks.map(async (book) => ({ book, topics: await getBookTopics(book) })),
+);
+const books = bookTopicPairs
+  .filter(({ topics }) => topics.some((bookTopic) => bookTopic.id === topic.id))
+  .map(({ book }) => book);
+
+const url = topicAbsoluteUrl(topic);
+const jsonLd = collectionPageJsonLd({
+  id: topic.id,
+  name: `${topic.data.title} Books`,
+  url,
+  description: topic.data.description,
+  books,
+});
+---
+
+<Layout
+  title={`${topic.data.title} Books | ${SITE_NAME}`}
+  description={topic.data.description}
+  path={`/topics/${topic.id}`}
+>
+  <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />
+
+  <section class="grid gap-12">
+    <div>
+      <h1 class="font-medium">{topic.data.title} Books</h1>
+      <p class="text-zinc-400">
+        {topic.data.description} {getBookCountLabel(books.length)}.
+      </p>
+    </div>
+
+    {
+      books.length > 0 ? (
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {books.map((book) => (
+            <BookCard book={book} />
+          ))}
+        </div>
+      ) : (
+        <p class="text-zinc-400">No books found</p>
+      )
+    }
+  </section>
+</Layout>

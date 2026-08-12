@@ -1,0 +1,69 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import BookCard from "../../components/BookCard.astro";
+import {
+  authorAbsoluteUrl,
+  collectionPageJsonLd,
+  serializeJsonLd,
+  SITE_NAME,
+} from "../../lib/seo";
+import { authorSlug, getAuthorSummaries, getBookCountLabel, splitAuthors } from "../../lib/taxonomy";
+
+export async function getStaticPaths() {
+  const books = await getCollection("books");
+  const authors = getAuthorSummaries(books);
+
+  return authors.map((author) => ({
+    params: { slug: author.slug },
+    props: { author },
+  }));
+}
+
+const { author } = Astro.props;
+
+const allBooks = await getCollection("books");
+const books = allBooks.filter((book) =>
+  splitAuthors(book.data.author).some((name) => authorSlug(name) === author.slug),
+);
+
+const description = `Books by ${author.name} in the Design Books reading list.`;
+const url = authorAbsoluteUrl(author.slug);
+const jsonLd = collectionPageJsonLd({
+  id: author.slug,
+  name: `${author.name} Books`,
+  url,
+  description,
+  books,
+});
+---
+
+<Layout
+  title={`${author.name} Books | ${SITE_NAME}`}
+  description={description}
+  path={`/authors/${author.slug}`}
+>
+  <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />
+
+  <section class="grid gap-12">
+    <div>
+      <h1 class="font-medium">{author.name}</h1>
+      <p class="text-zinc-400">
+        {description} {getBookCountLabel(books.length)}.
+      </p>
+    </div>
+
+    {
+      books.length > 0 ? (
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {books.map((book) => (
+            <BookCard book={book} />
+          ))}
+        </div>
+      ) : (
+        <p class="text-zinc-400">No books found</p>
+      )
+    }
+  </section>
+</Layout>

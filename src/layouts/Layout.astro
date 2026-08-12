@@ -1,0 +1,103 @@
+---
+import "@fontsource-variable/manrope";
+import "../styles/global.css";
+
+import { BookSubmissionDialog } from "../components/BookSubmissionDialog";
+import { absoluteUrl, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME } from "../lib/seo";
+
+interface Props {
+  title: string;
+  description?: string;
+  path: string;
+  image?: { url: string; width?: number; height?: number; alt: string } | null;
+  twitterCard?: "summary" | "summary_large_image";
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  path,
+  image = null,
+  twitterCard = "summary",
+  noindex = false,
+} = Astro.props;
+
+const canonical = absoluteUrl(path);
+const ogImage = image ? absoluteUrl(image.url) : absoluteUrl("/opengraph-image.jpg");
+const ogImageAlt = image?.alt ?? SITE_NAME;
+const twitterImage = image ? absoluteUrl(image.url) : absoluteUrl("/twitter-image.jpg");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={SITE_KEYWORDS.join(", ")} />
+    <meta name="application-name" content={SITE_NAME} />
+    <meta name="author" content="Bridger Tower" />
+
+    {
+      noindex ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : (
+        <meta
+          name="robots"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+      )
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    {image?.width && <meta property="og:image:width" content={String(image.width)} />}
+    {image?.height && <meta property="og:image:height" content={String(image.height)} />}
+
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={twitterImage} />
+
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen text-zinc-950 bg-zinc-50 selection:bg-orange-200">
+    <main class="p-6 sm:p-12 grid gap-12 max-w-7xl">
+      <nav class="flex items-center justify-between gap-4">
+        <h2 class="font-medium">
+          <a href="/" class="group">
+            Design Books
+            <span class="hidden group-hover:inline-block"> *</span>
+          </a>
+        </h2>
+        <BookSubmissionDialog client:idle />
+      </nav>
+
+      <slot />
+
+      <footer class="text-xs grid gap-1 text-zinc-400">
+        <p>
+          © designbooks.org / made by
+          <a href="https://bridger.to" class="link">bridger</a>
+          @
+          <a href="https://wipdes.com" class="link">wip</a>
+          / 2025
+        </p>
+      </footer>
+    </main>
+
+    <script>
+      import "../lib/smooth-scroll";
+    </script>
+  </body>
+</html>

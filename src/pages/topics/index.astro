@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import { getBookCountLabel, getBookTopics, topicUrl } from "../../lib/taxonomy";
+import {
+  absoluteUrl,
+  collectionIndexJsonLd,
+  serializeJsonLd,
+  SITE_NAME,
+  topicAbsoluteUrl,
+} from "../../lib/seo";
+
+const description =
+  "Browse design books by topic, including typography, usability, graphic design, brand identity, design systems, and creative practice.";
+
+const [topics, books] = await Promise.all([
+  getCollection("topics"),
+  getCollection("books"),
+]);
+
+topics.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const bookTopicsByBook = await Promise.all(books.map((book) => getBookTopics(book)));
+
+const jsonLd = collectionIndexJsonLd({
+  id: "topics",
+  name: "Design Book Topics",
+  url: absoluteUrl("/topics"),
+  description,
+  items: topics.map((topic) => ({
+    name: topic.data.title,
+    url: topicAbsoluteUrl(topic),
+  })),
+});
+---
+
+<Layout title={`Topics | ${SITE_NAME}`} description={description} path="/topics">
+  <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />
+
+  <section class="grid gap-12">
+    <div>
+      <h1 class="font-medium">Topics</h1>
+      <p class="text-zinc-400">{description}</p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        topics.map((topic) => {
+          const count = bookTopicsByBook.filter((bookTopics) =>
+            bookTopics.some((bookTopic) => bookTopic.id === topic.id),
+          ).length;
+
+          return (
+            <a
+              href={topicUrl(topic)}
+              class="p-8 relative flex aspect-square flex-col justify-end rounded-xl border border-zinc-200 bg-zinc-100 transition-colors duration-300 hover:bg-zinc-200"
+            >
+              <h2 class="font-medium">{topic.data.title}</h2>
+              <p class="text-sm text-zinc-400">{getBookCountLabel(count)}</p>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
+</Layout>

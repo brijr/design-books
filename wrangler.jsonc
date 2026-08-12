@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "design-books",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // This is a Workers project with static assets, not a Pages project.
+  // `assets.directory` is intentionally omitted: the Astro Cloudflare adapter
+  // runs through @cloudflare/vite-plugin, which wires the build output up
+  // itself. Setting `pages_build_output_dir` here would make wrangler treat
+  // this as a Pages project, where the ASSETS binding name is reserved.
+
+  // DISCORD_BOOK_SUBMISSIONS_WEBHOOK_URL is a secret, not a plain var, so it is
+  // deliberately NOT declared here -- putting it in `vars` would commit it in
+  // plaintext. Set it for production with:
+  //   wrangler secret put DISCORD_BOOK_SUBMISSIONS_WEBHOOK_URL
+  // For local dev, copy .dev.vars.example to .dev.vars (gitignored) and fill in.
+
+  "observability": {
+    "enabled": true
+  }
+}

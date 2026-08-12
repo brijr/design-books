@@ -1,5 +1,8 @@
-import type { Book, Media, Topic } from "@/payload-types";
-import { getBookTopics, splitAuthors } from "@/lib/taxonomy";
+import type { CollectionEntry } from "astro:content";
+import { splitAuthors } from "./taxonomy";
+
+type BookEntry = CollectionEntry<"books">;
+type TopicEntry = CollectionEntry<"topics">;
 
 export const SITE_URL = "https://designbooks.org";
 export const SITE_NAME = "Design Books";
@@ -21,20 +24,16 @@ export function absoluteUrl(path = "/") {
   return new URL(path, SITE_URL).toString();
 }
 
-export function bookUrl(book: Pick<Book, "slug">) {
-  return absoluteUrl(`/${book.slug.trim()}`);
+export function bookUrl(book: Pick<BookEntry, "id">) {
+  return absoluteUrl(`/${book.id.trim()}`);
 }
 
-export function topicAbsoluteUrl(topic: Pick<Topic, "slug">) {
-  return absoluteUrl(`/topics/${topic.slug}`);
+export function topicAbsoluteUrl(topic: Pick<TopicEntry, "id">) {
+  return absoluteUrl(`/topics/${topic.id}`);
 }
 
 export function authorAbsoluteUrl(slug: string) {
   return absoluteUrl(`/authors/${slug}`);
-}
-
-export function getBookImage(book: Pick<Book, "image">): Media | null {
-  return typeof book.image === "object" ? book.image : null;
 }
 
 export type BookImageMetadata = {
@@ -44,23 +43,23 @@ export type BookImageMetadata = {
   alt: string;
 };
 
-export function getBookImageMetadata(book: Book): BookImageMetadata | null {
-  const image = getBookImage(book);
+export function getBookImageMetadata(book: BookEntry): BookImageMetadata | null {
+  const cover = book.data.cover;
 
-  if (!image?.url) {
+  if (!cover) {
     return null;
   }
 
   return {
-    url: absoluteUrl(image.url),
-    width: image.width || undefined,
-    height: image.height || undefined,
-    alt: image.alt || `${book.title} book cover`,
+    url: absoluteUrl(cover.src),
+    width: cover.width,
+    height: cover.height,
+    alt: `${book.data.title} book cover`,
   };
 }
 
-export function bookMetadataTitle(book: Pick<Book, "title" | "author">) {
-  return `${book.title} by ${book.author}`;
+export function bookMetadataTitle(book: Pick<BookEntry, "data">) {
+  return `${book.data.title} by ${book.data.author}`;
 }
 
 export function serializeJsonLd(value: unknown) {
@@ -70,7 +69,7 @@ export function serializeJsonLd(value: unknown) {
     .replace(/&/g, "\\u0026");
 }
 
-export function collectionJsonLd(books: Book[]) {
+export function collectionJsonLd(books: BookEntry[]) {
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -128,10 +127,10 @@ export function collectionJsonLd(books: Book[]) {
             item: {
               "@type": "Book",
               "@id": `${bookUrl(book)}#book`,
-              name: book.title,
+              name: book.data.title,
               author: {
                 "@type": "Person",
-                name: book.author,
+                name: book.data.author,
               },
               url: bookUrl(book),
               image: image?.url,
@@ -154,7 +153,7 @@ export function collectionPageJsonLd({
   name: string;
   url: string;
   description: string;
-  books: Book[];
+  books: BookEntry[];
 }) {
   return {
     "@context": "https://schema.org",
@@ -233,11 +232,12 @@ export function collectionIndexJsonLd({
   };
 }
 
-export function bookJsonLd(book: Book) {
+export function bookJsonLd(book: BookEntry, topics: TopicEntry[]) {
   const image = getBookImageMetadata(book);
   const url = bookUrl(book);
-  const topics = getBookTopics(book);
-  const numberOfPages = book.pages ? Number.parseInt(book.pages, 10) : null;
+  const numberOfPages = book.data.pages
+    ? Number.parseInt(book.data.pages, 10)
+    : null;
 
   return {
     "@context": "https://schema.org",
@@ -245,25 +245,25 @@ export function bookJsonLd(book: Book) {
       {
         "@type": "Book",
         "@id": `${url}#book`,
-        name: book.title,
-        author: splitAuthors(book.author).map((author) => ({
+        name: book.data.title,
+        author: splitAuthors(book.data.author).map((author) => ({
           "@type": "Person",
           name: author,
         })),
-        description: book.description,
+        description: book.data.description,
         image: image?.url,
-        isbn: book.isbn || undefined,
-        publisher: book.publisher
+        isbn: book.data.isbn || undefined,
+        publisher: book.data.publisher
           ? {
               "@type": "Organization",
-              name: book.publisher,
+              name: book.data.publisher,
             }
           : undefined,
-        datePublished: book.year || undefined,
+        datePublished: book.data.year || undefined,
         numberOfPages: numberOfPages || undefined,
         url,
         mainEntityOfPage: url,
-        about: topics.map((topic) => topic.title),
+        about: topics.map((topic) => topic.data.title),
       },
       {
         "@type": "BreadcrumbList",
@@ -278,7 +278,7 @@ export function bookJsonLd(book: Book) {
           {
             "@type": "ListItem",
             position: 2,
-            name: book.title,
+            name: book.data.title,
             item: url,
           },
         ],

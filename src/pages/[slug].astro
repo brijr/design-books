@@ -1,0 +1,166 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+
+import Layout from "../layouts/Layout.astro";
+import BookCard from "../components/BookCard.astro";
+import { cn } from "../lib/cn";
+import {
+  bookJsonLd,
+  bookMetadataTitle,
+  bookUrl,
+  getBookImageMetadata,
+  serializeJsonLd,
+  SITE_NAME,
+} from "../lib/seo";
+import {
+  authorUrl,
+  getBookTopics,
+  getRelatedBooks,
+  splitAuthors,
+  topicUrl,
+} from "../lib/taxonomy";
+
+export async function getStaticPaths() {
+  const books = await getCollection("books");
+
+  return books.map((book) => ({
+    params: { slug: book.id },
+    props: { book },
+  }));
+}
+
+const { book } = Astro.props;
+const { Content } = await render(book);
+
+const authors = splitAuthors(book.data.author);
+const topics = await getBookTopics(book);
+const allBooks = await getCollection("books");
+const relatedBooks = await getRelatedBooks(book, allBooks);
+const jsonLd = bookJsonLd(book, topics);
+
+const metadataParts = [
+  book.data.publisher,
+  book.data.year,
+  book.data.pages ? `${book.data.pages} pages` : null,
+  book.data.isbn ? `ISBN ${book.data.isbn}` : null,
+].filter(Boolean);
+
+const title = bookMetadataTitle(book);
+const image = getBookImageMetadata(book);
+const cover = book.data.cover;
+const hasBody = Boolean(book.body?.trim());
+---
+
+<Layout
+  title={title}
+  description={book.data.description}
+  path={`/${book.id}`}
+  image={image}
+  twitterCard={image ? "summary_large_image" : "summary"}
+>
+  <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />
+
+  <article class="grid gap-12">
+    <div>
+      <h1 class="font-medium">{book.data.title}</h1>
+      <p class="text-zinc-400">
+        by
+        {
+          authors.map((author, index) => (
+            <span>
+              <a class="link" href={authorUrl(author)}>
+                {author}
+              </a>
+              {index < authors.length - 1 ? ", " : ""}
+            </span>
+          ))
+        }
+      </p>
+    </div>
+
+    <div class="grid gap-4 max-w-prose">
+      <p>{book.data.description}</p>
+      {
+        metadataParts.length > 0 && (
+          <p class="text-sm text-zinc-400">{metadataParts.join(" · ")}</p>
+        )
+      }
+      {
+        topics.length > 0 && (
+          <p class="text-sm text-zinc-400">
+            Topics:{" "}
+            {topics.map((topic, index) => (
+              <span>
+                <a class="link" href={topicUrl(topic)}>
+                  {topic.data.title}
+                </a>
+                {index < topics.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </p>
+        )
+      }
+      {
+        book.data.link && (
+          <a target="_blank" rel="noopener noreferrer" href={book.data.link}>
+            [ <span class="link">Purchase this book</span> ]
+          </a>
+        )
+      }
+    </div>
+
+    {
+      cover && (
+        <a
+          class={cn(
+            "p-8 relative flex flex-col items-center justify-center",
+            "aspect-video bg-zinc-100 border border-zinc-200 rounded-xl",
+            "hover:bg-zinc-200 transition-colors duration-300",
+            "relative group",
+          )}
+          href={book.data.link || bookUrl(book)}
+          target={book.data.link ? "_blank" : undefined}
+          rel={book.data.link ? "noopener noreferrer" : undefined}
+          aria-label={
+            book.data.link
+              ? `Purchase ${book.data.title}`
+              : `${book.data.title} by ${book.data.author}`
+          }
+        >
+          <Image
+            class="max-h-36 max-w-36 w-auto h-auto sm:max-w-64 sm:max-h-64 lg:max-w-96 lg:max-h-96"
+            src={cover}
+            alt={`${book.data.title} book cover`}
+          />
+          {book.data.link && (
+            <p class="hidden group-hover:inline-block absolute bottom-4 right-4 text-sm left-4 w-3/4">
+              Purchase this book
+            </p>
+          )}
+        </a>
+      )
+    }
+
+    {
+      hasBody && (
+        <div class="prose">
+          <Content />
+        </div>
+      )
+    }
+
+    {
+      relatedBooks.length > 0 && (
+        <section class="grid gap-6">
+          <h2 class="font-medium">Related books</h2>
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedBooks.map((relatedBook) => (
+              <BookCard book={relatedBook} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</Layout>

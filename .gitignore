@@ -12,12 +12,13 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
+# astro
+/dist/
+.astro/
 
-# production
-/build
+# cloudflare / wrangler
+.wrangler/
+.dev.vars
 
 # misc
 .DS_Store
@@ -36,9 +37,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 .env
+.env*
 
 /media
-.env*
