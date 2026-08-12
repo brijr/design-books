@@ -10,6 +10,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://designbooks.org",
   output: "static",
+  // Production serves /a-pattern-language directly and 308s the trailing-slash
+  // form away. Astro's directory format does the exact inverse, which would put
+  // a redirect hop in front of every inbound link, every sitemap <loc>, and
+  // every JSON-LD url -- and contradict our own canonical tags. `file` format
+  // emits a-pattern-language.html so the no-slash URL is the one that resolves.
+  trailingSlash: "never",
+  build: { format: "file" },
   adapter: cloudflare({
     // Every page that renders a cover is prerendered, so transform images at
     // build time and ship no runtime image service at all. The adapter's
