@@ -1,5 +1,4 @@
 ---
-import fs from "node:fs";
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 
@@ -10,10 +9,9 @@ import { collectionJsonLd, HOME_TITLE, serializeJsonLd, SITE_DESCRIPTION } from 
 
 const allBooks = await getCollection("books");
 
-// "Recently added" has no equivalent authored field in the MDX frontmatter
-// contract (unlike Payload's auto-managed createdAt). We fall back to each
-// file's on-disk mtime as a best-effort signal -- see README for the caveat
-// that this is only meaningful when file mtimes survive the deploy pipeline.
+// "Recently added" sorts on the authored `addedAt` frontmatter field. It is a
+// real value in the file rather than a filesystem timestamp, so the ordering
+// survives a fresh CI checkout, where every mtime is the clone time.
 const homeBooks: HomeBook[] = await Promise.all(
   allBooks.map(async (book) => {
     const topics = await getBookTopics(book);
@@ -28,16 +26,6 @@ const homeBooks: HomeBook[] = await Promise.all(
       };
     }
 
-    let createdAt = new Date(0).toISOString();
-    const filePath = (book as { filePath?: unknown }).filePath;
-    if (typeof filePath === "string") {
-      try {
-        createdAt = fs.statSync(filePath).mtime.toISOString();
-      } catch {
-        // File stat unavailable (e.g. in some CI checkouts) -- keep epoch.
-      }
-    }
-
     return {
       id: book.id,
       slug: book.id,
@@ -45,7 +33,7 @@ const homeBooks: HomeBook[] = await Promise.all(
       author: book.data.author,
       description: book.data.description,
       link: book.data.link,
-      createdAt,
+      addedAt: book.data.addedAt.toISOString(),
       image,
       topics: topics.map((topic) => ({ slug: topic.id, title: topic.data.title })),
     };

@@ -42,7 +42,25 @@ export async function getBookTopics(book: BookEntry): Promise<TopicEntry[]> {
     return [];
   }
 
-  return getEntries(book.data.topics);
+  const entries = await getEntries(book.data.topics);
+
+  // getEntries() yields undefined for a reference it cannot resolve. Astro logs
+  // its own "does not exist" message but does not halt, so without this guard
+  // the run dies later with an opaque "Cannot read properties of undefined".
+  // Fail here instead, naming the file and the offending slug.
+  const unresolved = book.data.topics
+    .map((ref, index) => (entries[index] ? null : ref.id))
+    .filter((id): id is string => id !== null);
+
+  if (unresolved.length > 0) {
+    throw new Error(
+      `Book "${book.id}" references unknown topic(s): ${unresolved.join(", ")}.\n` +
+        `Fix the topics list in src/content/books/${book.id}.mdx, or add the ` +
+        `missing topic at src/content/topics/<slug>.json.`,
+    );
+  }
+
+  return entries;
 }
 
 export function getAuthorSummaries(books: BookEntry[]): AuthorSummary[] {

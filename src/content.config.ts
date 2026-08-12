@@ -24,10 +24,11 @@ const topics = defineCollection({
 // rendering an empty topics list.
 //
 // `cover` uses the `image()` helper so covers are typed `ImageMetadata`
-// (intrinsic width/height included) rather than a bare string. Cover paths
-// in frontmatter are relative to src/assets/covers/, not to the MDX file
-// itself, so we rewrite the path before handing it to image()'s resolver
-// (content files live two directories below src/, hence `../../`).
+// (intrinsic width/height included) rather than a bare string, which is what
+// lets Astro optimize them and emit explicit dimensions to prevent layout shift.
+//
+// `.strict()` on both schemas means an unrecognized frontmatter key is a build
+// error too -- a typo'd field name can't silently do nothing.
 const books = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/books" }),
   schema: ({ image }) =>
@@ -36,6 +37,12 @@ const books = defineCollection({
         title: z.string().min(1, "title is required"),
         author: z.string().min(1, "author is required"),
         description: z.string().min(1, "description is required"),
+        // Drives the "Recently added" sort. Required on purpose: a missing
+        // date fails the build loudly rather than silently sorting the book
+        // to the bottom. `pnpm add-book` fills in today's date for you.
+        addedAt: z.coerce.date({
+          message: 'addedAt is required, as YYYY-MM-DD (e.g. "2026-08-12")',
+        }),
         link: z.string().url("link must be a valid URL").optional(),
         topics: z.array(reference("topics")).default([]),
         // Path is relative to this MDX file, which is what Astro's image()

@@ -11,15 +11,16 @@
     "preview": "wrangler dev",
     "deploy": "astro build && wrangler deploy",
     "check": "astro check",
+    "types": "wrangler types",
     "astro": "astro",
     "add-book": "node scripts/add-book.mjs"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "latest",
-    "@astrojs/mdx": "latest",
-    "@astrojs/react": "latest",
-    "@astrojs/sitemap": "latest",
-    "@fontsource-variable/manrope": "latest",
+    "@astrojs/cloudflare": "^14.2.1",
+    "@astrojs/mdx": "^7.0.5",
+    "@astrojs/react": "^6.0.2",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/manrope": "^5.3.0",
     "@tailwindcss/typography": "^0.5.15",
     "astro": "^7.2.1",
     "clsx": "^2.1.1",
@@ -38,7 +39,7 @@
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^4.3.2",
     "typescript": "5.7.2",
-    "wrangler": "latest"
+    "wrangler": "^4.121.0"
   },
   "engines": {
     "node": ">=20.9.0"

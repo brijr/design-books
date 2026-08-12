@@ -72,28 +72,55 @@ function yamlString(value) {
 }
 
 async function main() {
-  const rl = createInterface({ input: stdin, output: stdout });
+  console.log("Add a book to the Design Books reading list\n");
+
+  // Load topics BEFORE opening any input stream: an async gap after opening
+  // readline lets piped stdin reach EOF and close it mid-prompt.
+  const topics = await loadTopics();
+
+  // Two input modes. On a TTY we prompt interactively. When stdin is piped we
+  // drain it up front and answer from a queue -- readline emits every buffered
+  // line at once for a pipe, so sequential question() calls would silently drop
+  // all but the first. The piped mode is what makes this scriptable and
+  // testable (`pnpm add-book < answers.txt`).
+  const interactive = stdin.isTTY;
+  const rl = interactive ? createInterface({ input: stdin, output: stdout }) : null;
+
+  let queued = [];
+  if (!interactive) {
+    let raw = "";
+    for await (const chunk of stdin) raw += chunk;
+    queued = raw.split("\n");
+  }
 
   const ask = async (question, { required = false, validate } = {}) => {
     for (;;) {
-      const answer = (await rl.question(question)).trim();
+      let answer;
+
+      if (interactive) {
+        answer = (await rl.question(question)).trim();
+      } else {
+        answer = (queued.shift() ?? "").trim();
+        stdout.write(`${question}${answer}\n`);
+      }
 
       if (!answer && required) {
-        console.log("  This field is required.");
-        continue;
+        const message = "  This field is required.";
+        if (interactive) {
+          console.log(message);
+          continue;
+        }
+        throw new Error(`${message.trim()} (no value supplied for "${question.trim()}")`);
       }
 
       if (answer && validate && !validate(answer)) {
-        continue;
+        if (interactive) continue;
+        throw new Error(`Invalid value for "${question.trim()}": ${answer}`);
       }
 
       return answer;
     }
   };
-
-  console.log("Add a book to the Design Books reading list\n");
-
-  const topics = await loadTopics();
 
   const title = await ask("Title: ", { required: true });
   const author = await ask("Author(s), comma-separated: ", { required: true });
@@ -148,7 +175,19 @@ async function main() {
     "Cover filename in src/assets/covers/, e.g. my-book.jpg (optional): ",
   );
 
-  rl.close();
+  const today = new Date().toISOString().slice(0, 10);
+  const addedAt =
+    (await ask(`Date added [${today}]: `, {
+      validate: (value) => {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+          console.log("  Please use YYYY-MM-DD, or leave blank for today.");
+          return false;
+        }
+        return true;
+      },
+    })) || today;
+
+  rl?.close();
 
   const slug = slugify(title);
 
@@ -195,6 +234,7 @@ async function main() {
     `title: ${yamlString(title)}`,
     `author: ${yamlString(author)}`,
     `description: ${yamlString(description)}`,
+    `addedAt: ${yamlString(addedAt)}`,
   ];
 
   if (link) {
@@ -207,7 +247,12 @@ async function main() {
       : "topics: []",
   );
 
-  if (cover) frontmatterLines.push(`cover: ${yamlString(cover)}`);
+  // Astro's image() resolver wants a path relative to this MDX file, but asking
+  // an author to type "../../assets/covers/x.jpg" is a papercut -- they give us
+  // the bare filename and we expand it here.
+  if (cover) {
+    frontmatterLines.push(`cover: ${yamlString(`../../assets/covers/${cover}`)}`);
+  }
   if (publisher) frontmatterLines.push(`publisher: ${yamlString(publisher)}`);
   if (year) frontmatterLines.push(`year: ${yamlString(year)}`);
   if (pages) frontmatterLines.push(`pages: ${yamlString(pages)}`);

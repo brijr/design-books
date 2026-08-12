@@ -21,7 +21,7 @@ export type HomeBook = {
   author: string;
   description: string;
   link?: string;
-  createdAt: string;
+  addedAt: string;
   image: HomeBookImage | null;
   topics: HomeTopic[];
 };
@@ -281,7 +281,7 @@ function filterBooks(books: HomeBook[], filters: Filters) {
 function sortBooks(books: HomeBook[], sort: string) {
   return [...books].sort((a, b) => {
     if (sort === "recent") {
-      return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      return Date.parse(b.addedAt) - Date.parse(a.addedAt);
     }
 
     return a.title.localeCompare(b.title);
