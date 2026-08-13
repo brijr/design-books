@@ -1,6 +1,34 @@
+# Not a monorepo. This file exists because pnpm keeps its settings here, and
+# it is written to satisfy pnpm 10 and 11 simultaneously.
+#
+# `packageManager` in package.json should pin the builder to pnpm 11, but CI
+# environments do not always honor it -- Cloudflare Workers Builds initially
+# resolved pnpm 10.11.1 from its own environment. The keys below make the file
+# valid either way:
+#
+#   packages              pnpm 10 treats the presence of this file as a
+#                         workspace declaration and hard-errors with
+#                         "packages field missing or empty" without it.
+#                         pnpm 11 treats it as optional config.
+#   onlyBuiltDependencies pnpm 10's name for build-script approval.
+#   allowBuilds           pnpm 11's name for the same thing.
+#
+# Both approval keys are listed because each version ignores the other's.
+# Without an approval, workerd's postinstall stays blocked and `pnpm install`
+# exits 1 before the build runs.
+
+packages:
+  - .
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - workerd
+
 allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+
 minimumReleaseAgeExclude:
   - miniflare@5.20260804.1-alpha
