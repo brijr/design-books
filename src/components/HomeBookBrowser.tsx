@@ -146,21 +146,24 @@ export function HomeBookBrowser({
           </p>
         </div>
 
-        <div className="relative flex w-full flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-          <details ref={topicDetailsRef} className="group w-fit">
-            <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-sm hover:underline underline-offset-2 [&::-webkit-details-marker]:hidden">
+        <div className="flex w-full flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+          <details ref={topicDetailsRef} className="group relative w-fit">
+            <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-sm hover:underline underline-offset-2 group-open:underline [&::-webkit-details-marker]:hidden">
               <span className="sr-only">Filter by topic: </span>
               {currentTopicLabel}
-              <span className="text-zinc-400" aria-hidden="true">
-                ▾
-              </span>
+              <ChevronDown />
             </summary>
-            <div className="absolute left-0 top-full z-10 mt-2 hidden w-full flex-wrap gap-x-4 gap-y-2 bg-zinc-50 py-2 text-sm group-open:flex">
+            <div
+              className={cn(
+                "absolute left-0 top-full z-20 mt-2 hidden w-[min(24rem,calc(100vw-3rem))]",
+                "grid-cols-1 gap-x-8 gap-y-1 p-4 text-sm sm:grid-cols-2",
+                "rounded-xl border border-zinc-200 bg-zinc-50 shadow-sm",
+                "group-open:grid",
+              )}
+            >
               <a
                 href={homeHref({ ...filters, topic: "" })}
-                className={
-                  !filters.topic ? "link" : "text-zinc-400 hover:text-current"
-                }
+                className={topicOptionClass(!filters.topic)}
                 aria-current={!filters.topic ? "true" : undefined}
                 onClick={(event) => {
                   handleTopic(event, "");
@@ -173,11 +176,7 @@ export function HomeBookBrowser({
                 <a
                   key={bookTopic.slug}
                   href={homeHref({ ...filters, topic: bookTopic.slug })}
-                  className={
-                    filters.topic === bookTopic.slug
-                      ? "link"
-                      : "text-zinc-400 hover:text-current"
-                  }
+                  className={topicOptionClass(filters.topic === bookTopic.slug)}
                   aria-current={
                     filters.topic === bookTopic.slug ? "true" : undefined
                   }
@@ -289,6 +288,35 @@ function BookCard({ book }: { book: HomeBook }) {
         </a>
       )}
     </div>
+  );
+}
+
+function topicOptionClass(active: boolean) {
+  return cn(
+    "block py-0.5",
+    active ? "text-zinc-950" : "text-zinc-400 hover:text-zinc-950",
+  );
+}
+
+function ChevronDown() {
+  return (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="text-zinc-400"
+      aria-hidden="true"
+    >
+      <path
+        d="M2.25 3.75 5 6.5l2.75-2.75"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
