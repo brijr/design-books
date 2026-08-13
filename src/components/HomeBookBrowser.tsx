@@ -1,4 +1,4 @@
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import type { ChangeEvent, MouseEvent } from "react";
 
 import { cn } from "../lib/cn";
@@ -86,73 +86,138 @@ export function HomeBookBrowser({
     updateFilters({ ...filters, sort }, "push");
   };
 
+  const topicDetailsRef = useRef<HTMLDetailsElement>(null);
+  const currentTopic = topics.find((topic) => topic.slug === filters.topic);
+  const currentTopicLabel = currentTopic?.title ?? "All topics";
+
+  const closeTopicDetails = () => {
+    const details = topicDetailsRef.current;
+    if (details) {
+      details.open = false;
+    }
+  };
+
+  useEffect(() => {
+    const details = topicDetailsRef.current;
+    if (!details) {
+      return;
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!details.open) {
+        return;
+      }
+
+      if (!details.contains(event.target as Node)) {
+        details.open = false;
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && details.open) {
+        details.open = false;
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
-      <div className="grid grid-cols-[1fr_auto] items-center gap-4">
-        <input
-          type="text"
-          name="search"
-          aria-label="Search design books"
-          placeholder="Search"
-          value={filters.search}
-          onChange={handleSearch}
-          className="focus:outline-none w-full"
-        />
-        <p className="text-zinc-400">
-          {visibleBooks.length} {visibleBooks.length === 1 ? "book" : "books"}
-        </p>
-      </div>
-
       <div className="grid gap-4">
-        <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-          <a
-            href={homeHref({ ...filters, topic: "" })}
-            className={
-              !filters.topic ? "link" : "text-zinc-400 hover:text-current"
-            }
-            onClick={(event) => handleTopic(event, "")}
-          >
-            All
-          </a>
-          {topics.map((bookTopic) => (
+        <div className="grid grid-cols-[1fr_auto] items-end gap-4 border-b border-zinc-200 pb-2">
+          <input
+            type="text"
+            name="search"
+            aria-label="Search design books"
+            placeholder="Search"
+            value={filters.search}
+            onChange={handleSearch}
+            className="w-full bg-transparent focus:outline-none"
+          />
+          <p className="text-zinc-400">
+            {visibleBooks.length} {visibleBooks.length === 1 ? "book" : "books"}
+          </p>
+        </div>
+
+        <div className="relative flex w-full flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+          <details ref={topicDetailsRef} className="group w-fit">
+            <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-sm hover:underline underline-offset-2 [&::-webkit-details-marker]:hidden">
+              <span className="sr-only">Filter by topic: </span>
+              {currentTopicLabel}
+              <span className="text-zinc-400" aria-hidden="true">
+                ▾
+              </span>
+            </summary>
+            <div className="absolute left-0 top-full z-10 mt-2 hidden w-full flex-wrap gap-x-4 gap-y-2 bg-zinc-50 py-2 text-sm group-open:flex">
+              <a
+                href={homeHref({ ...filters, topic: "" })}
+                className={
+                  !filters.topic ? "link" : "text-zinc-400 hover:text-current"
+                }
+                aria-current={!filters.topic ? "true" : undefined}
+                onClick={(event) => {
+                  handleTopic(event, "");
+                  closeTopicDetails();
+                }}
+              >
+                All
+              </a>
+              {topics.map((bookTopic) => (
+                <a
+                  key={bookTopic.slug}
+                  href={homeHref({ ...filters, topic: bookTopic.slug })}
+                  className={
+                    filters.topic === bookTopic.slug
+                      ? "link"
+                      : "text-zinc-400 hover:text-current"
+                  }
+                  aria-current={
+                    filters.topic === bookTopic.slug ? "true" : undefined
+                  }
+                  onClick={(event) => {
+                    handleTopic(event, bookTopic.slug);
+                    closeTopicDetails();
+                  }}
+                >
+                  {bookTopic.title}
+                </a>
+              ))}
+            </div>
+          </details>
+
+          <div className="flex gap-4 text-sm">
             <a
-              key={bookTopic.slug}
-              href={homeHref({ ...filters, topic: bookTopic.slug })}
+              href={homeHref({ ...filters, sort: "" })}
               className={
-                filters.topic === bookTopic.slug
+                filters.sort !== "recent"
                   ? "link"
                   : "text-zinc-400 hover:text-current"
               }
-              onClick={(event) => handleTopic(event, bookTopic.slug)}
+              aria-current={filters.sort !== "recent" ? "true" : undefined}
+              onClick={(event) => handleSort(event, "")}
             >
-              {bookTopic.title}
+              A-Z
             </a>
-          ))}
-        </div>
-
-        <div className="flex gap-4 text-sm">
-          <a
-            href={homeHref({ ...filters, sort: "" })}
-            className={
-              filters.sort !== "recent"
-                ? "link"
-                : "text-zinc-400 hover:text-current"
-            }
-            onClick={(event) => handleSort(event, "")}
-          >
-            A-Z
-          </a>
-          <a
-            href={homeHref({ ...filters, sort: "recent" })}
-            className={
-              filters.sort === "recent"
-                ? "link"
-                : "text-zinc-400 hover:text-current"
-            }
-            onClick={(event) => handleSort(event, "recent")}
-          >
-            Recently added
-          </a>
+            <a
+              href={homeHref({ ...filters, sort: "recent" })}
+              className={
+                filters.sort === "recent"
+                  ? "link"
+                  : "text-zinc-400 hover:text-current"
+              }
+              aria-current={filters.sort === "recent" ? "true" : undefined}
+              onClick={(event) => handleSort(event, "recent")}
+            >
+              Recently added
+            </a>
+          </div>
         </div>
       </div>
 

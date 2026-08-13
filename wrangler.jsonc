@@ -16,6 +16,21 @@
   //   wrangler secret put DISCORD_BOOK_SUBMISSIONS_WEBHOOK_URL
   // For local dev, copy .dev.vars.example to .dev.vars (gitignored) and fill in.
 
+  // Keep the workers.dev URL alive alongside the custom domains. Wrangler
+  // disables it by default the moment any route is attached, which silently
+  // removes the fallback you want when a custom domain's cert is still
+  // provisioning or its DNS is mid-cutover.
+  "workers_dev": true,
+  "preview_urls": true,
+
+  // NOTE: custom domains are deliberately NOT declared here. The Astro
+  // Cloudflare adapter regenerates its own config at dist/server/wrangler.json
+  // and wrangler deploys *that* ("Using redirected Wrangler configuration"),
+  // and its merge drops `routes` -- a route declared here is silently ignored.
+  // Attach domains with the CLI flag instead, which bypasses the merge:
+  //   wrangler deploy --domain designbooks.org --domain design-books.com
+  // Custom domains persist on the Worker, so this is a one-time action.
+
   "observability": {
     "enabled": true
   }
