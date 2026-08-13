@@ -2,6 +2,12 @@
 import "@fontsource-variable/manrope";
 import "../styles/global.css";
 
+// Imported as a URL so Vite emits and hashes it, and so the preload below
+// points at the real built filename. Without the preload the browser cannot
+// discover this file until it has downloaded and parsed the bundled CSS,
+// which is the largest single cause of the flash.
+import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+
 import { BookSubmissionDialog } from "../components/BookSubmissionDialog";
 import { absoluteUrl, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME } from "../lib/seo";
 
@@ -36,6 +42,16 @@ const twitterImage = image ? absoluteUrl(image.url) : absoluteUrl("/twitter-imag
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="canonical" href={canonical} />
+
+    <!-- crossorigin is required even same-origin: fonts are always fetched in
+         CORS mode, and omitting it causes a second, duplicate download. -->
+    <link
+      rel="preload"
+      href={manropeLatin}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <title>{title}</title>
     <meta name="description" content={description} />

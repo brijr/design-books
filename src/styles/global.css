@@ -3,10 +3,39 @@
 
 @plugin "@tailwindcss/typography";
 
+/*
+  Metric-matched fallback for Manrope.
+
+  Fontsource ships Manrope with `font-display: swap`, so the browser paints
+  fallback text immediately and swaps when the webfont lands. Left alone that
+  swap is visible -- the text reflows, because Arial's proportions differ from
+  Manrope's. These overrides scale and re-box the fallback so it occupies
+  virtually the same space, which makes the swap imperceptible and drops the
+  layout shift to ~0. Manrope still always wins; nothing is traded away.
+
+  Derived from real font metrics via @capsizecss/metrics, not eyeballed:
+    Manrope  unitsPerEm 2000, ascent 2132, descent -600, lineGap 0, xHeight 1080
+    Arial    unitsPerEm 2048, xHeight 1062
+
+    size-adjust        = (1080/2000) / (1062/2048)          = 104.14%
+    ascent-override    = (2132/2000) / 1.0414               = 102.37%
+    descent-override   = (600/2000)  / 1.0414               =  28.81%
+
+  If the typeface ever changes, recompute rather than nudging these by hand.
+*/
+@font-face {
+  font-family: "Manrope Fallback";
+  src: local("Arial");
+  size-adjust: 104.14%;
+  ascent-override: 102.37%;
+  descent-override: 28.81%;
+  line-gap-override: 0%;
+}
+
 @theme {
   --font-sans:
-    "Manrope Variable", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji";
+    "Manrope Variable", "Manrope Fallback", ui-sans-serif, system-ui,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 /*
