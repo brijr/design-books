@@ -65,7 +65,7 @@ const hasBody = Boolean(book.body?.trim());
     <div>
       <h1 class="font-medium">{book.data.title}</h1>
       <p class="text-zinc-400">
-        by
+        by{" "}
         {
           authors.map((author, index) => (
             <span>
@@ -83,7 +83,9 @@ const hasBody = Boolean(book.body?.trim());
       <p>{book.data.description}</p>
       {
         metadataParts.length > 0 && (
-          <p class="text-sm text-zinc-400">{metadataParts.join(" · ")}</p>
+          <p class="text-sm text-zinc-400 tabular-nums">
+            {metadataParts.join(" · ")}
+          </p>
         )
       }
       {
@@ -103,8 +105,13 @@ const hasBody = Boolean(book.body?.trim());
       }
       {
         book.data.link && (
-          <a target="_blank" rel="noopener noreferrer" href={book.data.link}>
-            [ <span class="link">Purchase this book</span> ]
+          <a
+            class="link"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={book.data.link}
+          >
+            Purchase this book
           </a>
         )
       }
@@ -114,10 +121,10 @@ const hasBody = Boolean(book.body?.trim());
       cover && (
         <a
           class={cn(
-            "p-8 relative flex flex-col items-center justify-center",
-            "aspect-video bg-zinc-100 border border-zinc-200 rounded-xl",
+            "relative flex w-fit items-center justify-center p-8 sm:p-12",
+            "bg-zinc-100 border border-zinc-200 rounded-xl",
             "hover:bg-zinc-200 transition-colors duration-300",
-            "relative group",
+            "group",
           )}
           href={book.data.link || bookUrl(book)}
           target={book.data.link ? "_blank" : undefined}
