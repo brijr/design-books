@@ -46,3 +46,6 @@ yarn-error.log*
 # tldr daemon cache
 .tldr/
 .claude/worktrees/
+
+# next.js — repo migrated off Next, but stale dev caches must never be tracked
+.next/
