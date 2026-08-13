@@ -105,13 +105,8 @@ const hasBody = Boolean(book.body?.trim());
       }
       {
         book.data.link && (
-          <a
-            class="link"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={book.data.link}
-          >
-            Purchase this book
+          <a target="_blank" rel="noopener noreferrer" href={book.data.link}>
+            [ <span class="link">Purchase this book</span> ]
           </a>
         )
       }
@@ -121,8 +116,8 @@ const hasBody = Boolean(book.body?.trim());
       cover && (
         <a
           class={cn(
-            "relative flex w-fit items-center justify-center p-8 sm:p-12",
-            "bg-zinc-100 border border-zinc-200 rounded-xl",
+            "relative flex flex-col items-center justify-center p-8",
+            "aspect-video bg-zinc-100 border border-zinc-200 rounded-xl",
             "hover:bg-zinc-200 transition-colors duration-300",
             "group",
           )}
