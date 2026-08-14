@@ -1,0 +1,79 @@
+---
+import "@fontsource-variable/manrope";
+import "../styles/global.css";
+
+// Imported as a URL so Vite emits and hashes it and the preload below points
+// at the real built filename (same pattern as apps/design-books).
+import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+
+const sites = [
+  {
+    url: "https://design-books.com",
+    name: "design-books.com",
+    blurb: "A curated library of the best books on design and human–computer interaction.",
+  },
+  {
+    url: "https://design-styles.com",
+    name: "design-styles.com",
+    blurb: "Coming soon.",
+  },
+  {
+    url: "https://design-reference.com",
+    name: "design-reference.com",
+    blurb: "Coming soon.",
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Design Sites</title>
+    <meta
+      name="description"
+      content="Websites about design by Bridger Tower: design-books, design-styles, and design-reference."
+    />
+    <link rel="canonical" href="https://design-sites.com/" />
+    <link rel="icon" href="data:," />
+    <!-- crossorigin is required even same-origin: fonts are always fetched in
+         CORS mode, and omitting it causes a second, duplicate download. -->
+    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
+  </head>
+  <body class="bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+    <main class="mx-auto w-full max-w-lg px-6 py-24 sm:py-32">
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">design&#8209;sites</h1>
+      <p class="mt-4 text-zinc-500 dark:text-zinc-400">
+        Websites about design by
+        <a
+          href="https://bridger.to"
+          class="underline decoration-zinc-300 underline-offset-4 hover:decoration-current dark:decoration-zinc-600"
+          >Bridger Tower</a
+        >.
+      </p>
+      <ul class="mt-16 space-y-10">
+        {
+          sites.map((site) => (
+            <li>
+              <a
+                href={site.url}
+                class="font-medium underline decoration-zinc-300 underline-offset-4 hover:decoration-current dark:decoration-zinc-600"
+              >
+                {site.name}
+              </a>
+              <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{site.blurb}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <footer class="mt-24 text-sm text-zinc-500 dark:text-zinc-400">
+        <a
+          href="https://github.com/brijr/design-sites"
+          class="underline decoration-zinc-300 underline-offset-4 hover:decoration-current dark:decoration-zinc-600"
+          >Open source on GitHub</a
+        >
+      </footer>
+    </main>
+  </body>
+</html>

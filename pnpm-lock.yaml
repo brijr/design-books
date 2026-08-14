@@ -106,6 +106,34 @@ importers:
         specifier: ^4.121.0
         version: 4.121.0
 
+  apps/design-sites:
+    dependencies:
+      '@astrojs/cloudflare':
+        specifier: ^14.2.1
+        version: 14.2.1(@types/node@26.2.0)(astro@7.2.1(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.2.0)(@vercel/blob@2.3.1)(jiti@2.7.0)(sass@1.77.4)(tsx@4.22.4)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(sass@1.77.4)(tsx@4.22.4)(wrangler@4.121.0)(yaml@2.9.0)
+      '@fontsource-variable/manrope':
+        specifier: ^5.3.0
+        version: 5.3.0
+      astro:
+        specifier: ^7.2.1
+        version: 7.2.1(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.2.0)(@vercel/blob@2.3.1)(jiti@2.7.0)(sass@1.77.4)(tsx@4.22.4)(yaml@2.9.0)
+      tailwindcss:
+        specifier: ^4.3.2
+        version: 4.3.3
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.10
+        version: 0.9.10(prettier@3.9.6)(typescript@5.7.2)
+      '@tailwindcss/vite':
+        specifier: ^4.3.2
+        version: 4.3.3(vite@8.2.1(@types/node@26.2.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.77.4)(tsx@4.22.4)(yaml@2.9.0))
+      typescript:
+        specifier: 5.7.2
+        version: 5.7.2
+      wrangler:
+        specifier: ^4.121.0
+        version: 4.121.0
+
   apps/design-styles:
     dependencies:
       '@astrojs/cloudflare':
