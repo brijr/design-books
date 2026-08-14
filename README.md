@@ -8,6 +8,7 @@ of [Astro](https://astro.build) apps deployed to Cloudflare Workers.
 | [`apps/design-books`](apps/design-books) | [design-books.com](https://design-books.com) · [designbooks.org](https://designbooks.org) | A curated library of the best books on design and HCI |
 | `apps/design-styles` | design-styles.com | Coming soon |
 | `apps/design-reference` | design-reference.com | Coming soon |
+| `apps/design-philosophies` | design-philosophies.com | Coming soon |
 
 ## Development
 

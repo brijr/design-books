@@ -1,0 +1,29 @@
+{
+  "name": "design-philosophies",
+  "version": "0.1.0",
+  "description": "Placeholder for design-philosophies.com.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler dev",
+    "check": "astro check",
+    "deploy": "astro build && wrangler deploy"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^14.2.1",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "astro": "^7.2.1",
+    "tailwindcss": "^4.3.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/vite": "^4.3.2",
+    "typescript": "5.7.2",
+    "wrangler": "^4.121.0"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}
