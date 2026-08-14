@@ -1,25 +1,18 @@
-# Not a monorepo. This file exists because pnpm keeps its settings here, and
-# it is written to satisfy pnpm 10 and 11 simultaneously.
+# Real workspace declaration. `packages` also keeps pnpm <= 10.9 from erroring
+# with "packages field missing or empty" (fixed in 10.10+, but harmless).
 #
-# `packageManager` in package.json should pin the builder to pnpm 11, but CI
-# environments do not always honor it -- Cloudflare Workers Builds initially
-# resolved pnpm 10.11.1 from its own environment. The keys below make the file
-# valid either way:
-#
-#   packages              pnpm 10 treats the presence of this file as a
-#                         workspace declaration and hard-errors with
-#                         "packages field missing or empty" without it.
-#                         pnpm 11 treats it as optional config.
-#   onlyBuiltDependencies pnpm 10's name for build-script approval.
-#   allowBuilds           pnpm 11's name for the same thing.
-#
-# Both approval keys are listed because each version ignores the other's.
-# Without an approval, workerd's postinstall stays blocked and `pnpm install`
-# exits 1 before the build runs.
-
+# Workers Builds does NOT honor `packageManager` (its pnpm default is 10.11.1);
+# each Workers project sets PNPM_VERSION=11.5.2 as a build variable instead.
+# See .scratch/design-sites and the research/workers-builds-monorepo branch.
 packages:
-  - .
+  - apps/*
+  - packages/*
 
+# Build-script approval, spelled both ways:
+#   onlyBuiltDependencies  pnpm <= 10.25 (Workers Builds default is 10.11.1)
+#   allowBuilds            pnpm >= 10.26 and pnpm 11+ (v11 removed the old key)
+# Each version ignores the other's key. Without an approval, workerd's
+# postinstall stays blocked and `pnpm install` exits 1.
 onlyBuiltDependencies:
   - esbuild
   - sharp
@@ -30,5 +23,6 @@ allowBuilds:
   sharp: true
   workerd: true
 
+# pnpm 11 defaults minimumReleaseAge to 1440; allow the pinned miniflare alpha.
 minimumReleaseAgeExclude:
   - miniflare@5.20260804.1-alpha
