@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "design-styles",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Same setup as apps/design-books — see its wrangler.jsonc for the full
+  // rationale. The Astro Cloudflare adapter deploys its own generated config
+  // (dist/server/wrangler.json), whose merge drops `routes`, so the custom
+  // domain is deliberately NOT declared here. Attach it once with:
+  //   wrangler deploy --domain design-styles.com
+  // Custom domains persist on the Worker afterwards.
+
+  // Keep the workers.dev URL alive alongside the custom domain as a fallback
+  // while certs provision or DNS is mid-cutover.
+  "workers_dev": true,
+  "preview_urls": true,
+
+  "observability": {
+    "enabled": true
+  }
+}

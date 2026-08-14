@@ -1,0 +1,50 @@
+---
+import "@fontsource-variable/manrope";
+import "../styles/global.css";
+
+// Imported as a URL so Vite emits and hashes it and the preload below points
+// at the real built filename (same pattern as apps/design-books).
+import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Design Reference</title>
+    <meta name="description" content="A design reference by Bridger Tower. Coming soon." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="data:," />
+    <!-- crossorigin is required even same-origin: fonts are always fetched in
+         CORS mode, and omitting it causes a second, duplicate download. -->
+    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
+  </head>
+  <body
+    class="flex min-h-dvh flex-col bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100"
+  >
+    <main class="grid flex-1 place-items-center px-6">
+      <div class="max-w-md text-center">
+        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+          design&#8209;reference
+        </h1>
+        <p class="mt-4 text-zinc-500 dark:text-zinc-400">Coming soon.</p>
+      </div>
+    </main>
+    <footer
+      class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 p-6 text-sm text-zinc-500 dark:text-zinc-400"
+    >
+      <a class="hover:text-zinc-900 dark:hover:text-zinc-100" href="https://bridger.to"
+        >A design site by Bridger Tower</a
+      >
+      <span aria-hidden="true">·</span>
+      <a class="hover:text-zinc-900 dark:hover:text-zinc-100" href="https://design-books.com"
+        >design-books.com</a
+      >
+      <span aria-hidden="true">·</span>
+      <a class="hover:text-zinc-900 dark:hover:text-zinc-100" href="https://design-styles.com"
+        >design-styles.com</a
+      >
+    </footer>
+  </body>
+</html>

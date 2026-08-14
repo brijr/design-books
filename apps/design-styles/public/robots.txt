@@ -1,0 +1,3 @@
+# Placeholder site — keep it out of the index until real content exists.
+User-agent: *
+Disallow: /
