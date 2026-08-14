@@ -1,8 +1,8 @@
 # Design Books
 
-> 🔗 [designbooks.org](https://designbooks.org)
+> 🔗 [design-books.com](https://design-books.com)
 
-This is the Astro application for [designbooks.org](https://designbooks.org), deployed on Cloudflare Workers. Created by [Bridger Tower](https://bridger.to).
+This is the Astro application for [design-books.com](https://design-books.com), deployed on Cloudflare Workers. Created by [Bridger Tower](https://bridger.to).
 
 ## Stack
 

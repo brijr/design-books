@@ -63,7 +63,7 @@ export const POST: APIRoute = async ({ request }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "User-Agent": "Design Books (https://designbooks.org, 1.0)",
+        "User-Agent": "Design Books (https://design-books.com, 1.0)",
       },
       body: JSON.stringify(buildDiscordMessage(submission)),
     });

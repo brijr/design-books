@@ -8,7 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://designbooks.org",
+  site: "https://design-books.com",
   output: "static",
   // Production serves /a-pattern-language directly and 308s the trailing-slash
   // form away. Astro's directory format does the exact inverse, which would put

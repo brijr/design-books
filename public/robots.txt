@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://designbooks.org/sitemap-index.xml
+Sitemap: https://design-books.com/sitemap-index.xml

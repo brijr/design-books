@@ -4,7 +4,7 @@ import { splitAuthors } from "./taxonomy";
 type BookEntry = CollectionEntry<"books">;
 type TopicEntry = CollectionEntry<"topics">;
 
-export const SITE_URL = "https://designbooks.org";
+export const SITE_URL = "https://design-books.com";
 export const SITE_NAME = "Design Books";
 export const HOME_TITLE = "Design Books | Essential Reading for Designers";
 export const SITE_DESCRIPTION =
