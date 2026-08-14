@@ -1,5 +1,5 @@
 {
-  "name": "design-sites-monorepo",
+  "name": "design-sites",
   "private": true,
   "type": "module",
   "scripts": {
