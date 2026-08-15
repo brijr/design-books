@@ -1,48 +1,104 @@
-# design-styles.com
+# design-styles.com — locked brief
 
-Working document for what this site becomes. Sibling of design-books.com —
-same care, its own face.
+Verb: **See**. Locked 2026-08-14 (site-content effort, "Lock the design-styles
+brief" ticket). Inherits [family-vision.md](family-vision.md); this brief adds
+the decisions the vision left open. Amend only via the proving batch.
 
 ## Premise
 
-_One line: what is this site?_ (draft) A visual field guide to design styles
-and movements — what each one looks like, where it came from, and how to
-recognize it in the wild.
+A visual field guide to the movements and visual languages that shape design —
+organized timeline-wise, built for **recognition**: what does this look like,
+where did it come from, how do I spot it in the wild.
 
-## Why this site
+## Position
 
-The web has scattered listicles ("10 graphic design styles!") and dense art
-history, but no well-designed, canonical reference that treats styles the way
-design-books treats books: curated, structured, visual.
-
-## Audience
-
-Designers and design-curious people who want to name what they're seeing, and
-students building visual literacy.
+(From the prior-art survey, branch `research/prior-art`.) Wikipedia is deep but
+visually starved; museums have imagery without narrative; trend galleries decay
+and die. Nothing offers a visual field guide with a historical spine connecting
+Bauhaus to neubrutalism. That connective spine — plus original specimens — is
+the moat. Link out to museum collections; never compete with them.
 
 ## Content model
 
-_What is one entry?_ (sketch) A **style**: name, era, one-line definition,
-visual characteristics, key figures/works, related styles, where you see it
-today. Styles could group by discipline (graphic, industrial, architecture,
-web) or stay one flat taxonomy.
+One collection, two types (never divided past/present):
 
-## Seed entries
+- **Movement** — historical context, participants, geography, usually an
+  articulated agenda (Bauhaus, De Stijl, Memphis).
+- **Style** — a recognizable visual language, possibly diffuse, revived, or
+  digitally native (neubrutalism, glassmorphism, vaporwave).
 
-Swiss / International Style · Bauhaus · Brutalism (web + architecture) ·
-Memphis · Art Deco · Mid-century Modern · Minimalism · Y2K · Vaporwave ·
-Flat Design · Skeuomorphism · Neubrutalism · Corporate Memphis ·
-De Stijl · Constructivism · Psychedelia · Grunge · Metro/Fluent
+Attributes per entry: type (movement/style) · status (historical, revived,
+current, emerging) · period + place · medium (graphic, editorial, identity,
+interface, product) · influences and descendants.
 
-## Voice
+Page anatomy — a **specimen**, not an article:
 
-_tbd_
+1. One-sentence definition
+2. Annotated visual examples
+3. Visual grammar: type, color, form, grid, imagery, material, motion
+4. Origins and context
+5. Key figures and works
+6. "Often confused with"
+7. Contemporary applications
+8. Related philosophies and books (canonical-home links)
 
-## Open questions
+Every image carries `source` + `license` fields. Interface direction (for the
+build): exploratory — visual index, timeline, filters, side-by-side compare.
 
-- Is a "style" era-bound (Bauhaus 1919–1933) or living (minimalism)?
-- Are web/UI styles (flat, skeuomorphic) the same kind of thing as movements
-  (Bauhaus)? One taxonomy or two?
-- Visual-first (image grids per style) or text-first with select imagery?
-  Imagery has rights questions books' covers didn't.
-- What's the design-books-style "one honest unit" here — the style page?
+## Imagery policy (locked)
+
+**Recreations first, CC0 second, fair use sparingly** (full findings: branch
+`research/imagery-rights`). Styles aren't copyrightable — original specimens
+are the default and the signature. Museum CC0 (Met, Smithsonian/Cooper Hewitt,
+Rijksmuseum, AIC) for pre-1931 material; small in-copyright reproductions only
+inside genuine criticism; never let a page drift into "image archive with
+captions." Vaporwave et al.: recreate the aesthetic, never its sampled assets.
+
+## Recreations (locked)
+
+**Medium-matched.** Digitally native styles get *live HTML/CSS/SVG specimens*
+— the neubrutalism specimen IS neubrutalist, inspectable. Historical movements
+get annotated diagrams + CC0 imagery.
+
+## Launch scope (locked)
+
+**2D-visual launch**: graphic, identity, interface. Editorial folds into
+graphic; product-led entries (Rams-era Braun etc.) are a second wave — the
+attribute exists from day one, unused.
+
+## Voice (locked)
+
+**Field-guide observational.** Precise, recognition-first, "how to spot it,"
+short declarative sentences — a birding guide written by a designer. Not
+encyclopedic (Wikipedia's register), not chatty (trend-blog register).
+
+## Launch list (24 entries, locked)
+
+★ = proving-batch anchor.
+
+**Foundations 1880–1920:** Arts & Crafts (movement, historical) · Art Nouveau
+(movement, historical) · Dada (movement, historical) · Constructivism
+(movement, historical) · De Stijl (movement, historical)
+
+**Modernism 1919–1975:** Bauhaus ★ (movement, historical) · The New
+Typography (movement, historical) · Art Deco (movement, revived) ·
+International Typographic Style (movement, revived) · New York School
+(movement, historical)
+
+**Counterculture & Postmodernism 1965–1995:** Psychedelia (style, historical)
+· Punk / DIY (style, historical) · New Wave / Swiss Punk (style, historical) ·
+Memphis ★ (movement, historical) · Grunge (style, historical)
+
+**Digital & Living 1995–now:** Y2K ★ (style, revived) · Minimalism ★ (style,
+current — the contested boundary with design-philosophies) · Skeuomorphism
+(style, historical) · Flat Design (style, current) · Vaporwave (style,
+current) · Web Brutalism (style, historical) · Neubrutalism ★ (style,
+current) · Glassmorphism (style, current) · Corporate Memphis (style, current)
+
+**Bench (post-launch):** Futurism, Plakatstil, Vienna Secession, Streamline
+Moderne, Op Art, Metro/Fluent, Neumorphism, rave/techno graphics.
+
+## Next
+
+The proving batch (map ticket "Write the design-styles proving batch"): ~7
+entries anchored on the ★ set, this file graduates to `content/design-styles/`.
