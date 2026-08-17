@@ -37,7 +37,6 @@ const authors = splitAuthors(book.data.author);
 const topics = await getBookTopics(book);
 const allBooks = await getCollection("books");
 const relatedBooks = await getRelatedBooks(book, allBooks);
-const jsonLd = bookJsonLd(book, topics);
 
 const metadataParts = [
   book.data.publisher,
@@ -47,7 +46,8 @@ const metadataParts = [
 ].filter(Boolean);
 
 const title = bookMetadataTitle(book);
-const image = getBookImageMetadata(book);
+const image = await getBookImageMetadata(book);
+const jsonLd = bookJsonLd(book, topics, image);
 const cover = book.data.cover;
 const hasBody = Boolean(book.body?.trim());
 ---

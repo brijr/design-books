@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+import { getImage } from "astro:assets";
 import { splitAuthors } from "./taxonomy";
 
 type BookEntry = CollectionEntry<"books">;
@@ -43,17 +44,24 @@ export type BookImageMetadata = {
   alt: string;
 };
 
-export function getBookImageMetadata(book: BookEntry): BookImageMetadata | null {
+export async function getBookImageMetadata(
+  book: BookEntry,
+): Promise<BookImageMetadata | null> {
   const cover = book.data.cover;
 
   if (!cover) {
     return null;
   }
 
+  // ImageMetadata.src names the source module, but Astro does not guarantee
+  // that source URL is emitted. getImage() creates the actual static asset
+  // used by crawlers and returns its deployable hashed URL.
+  const optimized = await getImage({ src: cover, format: "jpg" });
+
   return {
-    url: absoluteUrl(cover.src),
-    width: cover.width,
-    height: cover.height,
+    url: absoluteUrl(optimized.src),
+    width: Number(optimized.attributes.width ?? cover.width),
+    height: Number(optimized.attributes.height ?? cover.height),
     alt: `${book.data.title} book cover`,
   };
 }
@@ -69,7 +77,31 @@ export function serializeJsonLd(value: unknown) {
     .replace(/&/g, "\\u0026");
 }
 
-export function collectionJsonLd(books: BookEntry[]) {
+export async function collectionJsonLd(books: BookEntry[]) {
+  const itemListElement = await Promise.all(
+    books.map(async (book, index) => {
+      const image = await getBookImageMetadata(book);
+
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        url: bookUrl(book),
+        name: bookMetadataTitle(book),
+        item: {
+          "@type": "Book",
+          "@id": `${bookUrl(book)}#book`,
+          name: book.data.title,
+          author: {
+            "@type": "Person",
+            name: book.data.author,
+          },
+          url: bookUrl(book),
+          image: image?.url,
+        },
+      };
+    }),
+  );
+
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -116,27 +148,7 @@ export function collectionJsonLd(books: BookEntry[]) {
         "@type": "ItemList",
         "@id": absoluteUrl("/#item-list"),
         numberOfItems: books.length,
-        itemListElement: books.map((book, index) => {
-          const image = getBookImageMetadata(book);
-
-          return {
-            "@type": "ListItem",
-            position: index + 1,
-            url: bookUrl(book),
-            name: bookMetadataTitle(book),
-            item: {
-              "@type": "Book",
-              "@id": `${bookUrl(book)}#book`,
-              name: book.data.title,
-              author: {
-                "@type": "Person",
-                name: book.data.author,
-              },
-              url: bookUrl(book),
-              image: image?.url,
-            },
-          };
-        }),
+        itemListElement,
       },
     ],
   };
@@ -232,8 +244,11 @@ export function collectionIndexJsonLd({
   };
 }
 
-export function bookJsonLd(book: BookEntry, topics: TopicEntry[]) {
-  const image = getBookImageMetadata(book);
+export function bookJsonLd(
+  book: BookEntry,
+  topics: TopicEntry[],
+  image: BookImageMetadata | null,
+) {
   const url = bookUrl(book);
   const numberOfPages = book.data.pages
     ? Number.parseInt(book.data.pages, 10)

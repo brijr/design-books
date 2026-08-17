@@ -8,6 +8,14 @@ packages:
   - apps/*
   - packages/*
 
+# Keep vulnerable transitive packages on their smallest patched releases
+# until their framework parents update the dependency ranges themselves.
+overrides:
+  immutable@4: 4.3.9
+  js-yaml@4: 4.3.1
+  picomatch@2: 2.3.2
+  undici@6: 6.28.0
+
 # Build-script approval, spelled both ways:
 #   onlyBuiltDependencies  pnpm <= 10.25 (Workers Builds default is 10.11.1)
 #   allowBuilds            pnpm >= 10.26 and pnpm 11+ (v11 removed the old key)

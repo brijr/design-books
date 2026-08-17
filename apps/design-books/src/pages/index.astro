@@ -50,7 +50,7 @@ const homeTopics = [...homeTopicsMap.values()].sort((a, b) =>
   a.title.localeCompare(b.title),
 );
 
-const jsonLd = collectionJsonLd(allBooks);
+const jsonLd = await collectionJsonLd(allBooks);
 ---
 
 <Layout title={HOME_TITLE} description={SITE_DESCRIPTION} path="/">
