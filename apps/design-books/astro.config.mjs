@@ -26,6 +26,9 @@ export default defineConfig({
     // binding -- a paid, separately-provisioned service this site does not
     // need, and which would 404 every cover if it were ever unbound.
     imageService: { build: "compile", runtime: "passthrough" },
+    // Off so `pnpm dev` can start every app at once. Four workerd inspectors
+    // racing for 9229 crash the first loser with EADDRINUSE.
+    inspectorPort: false,
     platformProxy: {
       enabled: true,
     },

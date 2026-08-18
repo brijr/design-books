@@ -14,8 +14,9 @@ of [Astro](https://astro.build) apps deployed to Cloudflare Workers.
 
 ```bash
 pnpm install
-pnpm dev            # every app, in parallel
+pnpm dev            # every app, in parallel (stops leftovers first)
 pnpm --filter <app> dev
+pnpm dev:stop       # stop every app's dev server
 pnpm build          # build every app
 ```
 

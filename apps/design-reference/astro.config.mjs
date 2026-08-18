@@ -13,6 +13,9 @@ export default defineConfig({
   server: { port: 4323 },
   adapter: cloudflare({
     imageService: { build: "compile", runtime: "passthrough" },
+    // Off so `pnpm dev` can start every app at once. Four workerd inspectors
+    // racing for 9229 crash the first loser with EADDRINUSE.
+    inspectorPort: false,
     platformProxy: {
       enabled: true,
     },

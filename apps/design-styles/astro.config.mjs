@@ -17,6 +17,9 @@ export default defineConfig({
   build: { format: "file" },
   adapter: cloudflare({
     imageService: { build: "compile", runtime: "passthrough" },
+    // Off so `pnpm dev` can start every app at once. Four workerd inspectors
+    // racing for 9229 crash the first loser with EADDRINUSE.
+    inspectorPort: false,
     platformProxy: {
       enabled: true,
     },
