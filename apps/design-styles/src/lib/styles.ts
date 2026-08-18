@@ -3,7 +3,6 @@ import type { CollectionEntry } from "astro:content";
 export type StyleEntry = CollectionEntry<"styles">;
 
 export type SwatchAspect = "color" | "type" | "form";
-export type RailSurface = "index" | "entry";
 export type Era = StyleEntry["data"]["era"];
 export type Medium = StyleEntry["data"]["medium"][number];
 
@@ -99,16 +98,11 @@ function swatchLabel(aspect: SwatchAspect) {
   }
 }
 
-export function railTiles(entry: StyleEntry, surface: RailSurface = "entry"): RailTile[] {
-  const tiles: RailTile[] = [{ kind: "specimen", id: entry.id, label: "Specimen" }];
-
-  if (surface === "entry") {
-    tiles.push(
-      { kind: "swatch", id: entry.id, aspect: "color", label: swatchLabel("color") },
-      { kind: "swatch", id: entry.id, aspect: "type", label: swatchLabel("type") },
-      { kind: "swatch", id: entry.id, aspect: "form", label: swatchLabel("form") },
-    );
-  }
-
-  return tiles;
+export function railTiles(entry: StyleEntry): RailTile[] {
+  return [
+    { kind: "specimen", id: entry.id, label: "Specimen" },
+    { kind: "swatch", id: entry.id, aspect: "color", label: swatchLabel("color") },
+    { kind: "swatch", id: entry.id, aspect: "type", label: swatchLabel("type") },
+    { kind: "swatch", id: entry.id, aspect: "form", label: swatchLabel("form") },
+  ];
 }

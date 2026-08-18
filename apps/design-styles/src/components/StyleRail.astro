@@ -12,8 +12,10 @@ interface Props {
 }
 
 const { entry, size = "index" } = Astro.props;
-const tiles = railTiles(entry, size);
+const tiles = railTiles(entry);
 const selfHref = `/${entry.id}`;
+const cover = entry.data.images[0];
+const specimenLabel = cover?.alt ?? `${entry.data.title} specimen`;
 ---
 
 <ImageRail label={`Visual grammar for ${entry.data.title}`}>
@@ -23,8 +25,8 @@ const selfHref = `/${entry.id}`;
         case "specimen":
           return (
             <RailItem caption={tile.label}>
-              <Plate href={selfHref} label={`${entry.data.title} specimen`} size={size}>
-                <Specimen id={tile.id} compact />
+              <Plate href={selfHref} label={specimenLabel} size={size}>
+                <Specimen id={tile.id} compact image={cover} />
               </Plate>
             </RailItem>
           );
@@ -44,3 +46,10 @@ const selfHref = `/${entry.id}`;
     })
   }
 </ImageRail>
+{
+  size === "entry" && cover && (
+    <p class="text-xs text-zinc-400">
+      {cover.alt}. {cover.source}. {cover.license}.
+    </p>
+  )
+}

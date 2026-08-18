@@ -3,8 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "pnpm --filter \"./apps/**\" --parallel exec astro dev stop",
-    "dev": "pnpm --filter \"./apps/**\" --parallel --stream dev",
+    "dev": "node scripts/dev.mjs",
     "dev:stop": "pnpm --filter \"./apps/**\" --parallel exec astro dev stop",
     "build": "pnpm --recursive run build",
     "check": "pnpm --recursive run check"

@@ -14,18 +14,11 @@ of [Astro](https://astro.build) apps deployed to Cloudflare Workers.
 
 ```bash
 pnpm install
-pnpm dev            # every app, in parallel (stops leftovers first)
+pnpm dev            # every app; prints the local URL list as they come up
 pnpm --filter <app> dev
 pnpm dev:stop       # stop every app's dev server
 pnpm build          # build every app
 ```
-
-| App | Dev URL |
-| --- | --- |
-| design-books | http://localhost:4321 |
-| design-styles | http://localhost:4322 |
-| design-reference | http://localhost:4323 |
-| design-philosophies | http://localhost:4324 |
 
 Each app deploys as its own Cloudflare Worker via git-connected Workers Builds,
 with the project's root directory set to `apps/<app>` and build watch paths
