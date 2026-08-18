@@ -1,0 +1,34 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="rail overflow-x-auto focus:outline-none" tabindex="0">
+  <ul class="flex snap-x snap-mandatory gap-4 pr-6 pb-1 sm:pr-12" aria-label={label}>
+    <slot />
+  </ul>
+</div>
+
+<style>
+  /*
+    Break out of the max-w-7xl column to the viewport edge so plates can
+    sit on top of the page and scroll off-screen instead of being sliced
+    by the content box. Left padding matches Layout (p-6 / sm:p-12).
+  */
+  .rail {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: -1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .rail {
+      margin-left: -3rem;
+      padding-left: 3rem;
+    }
+  }
+</style>

@@ -21,7 +21,34 @@
 }
 
 @layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
   html {
+    overflow-x: clip;
     font-family: var(--font-sans);
   }
+
+  body {
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+.link {
+  @apply underline-offset-2 hover:underline;
 }

@@ -1,0 +1,511 @@
+---
+interface Props {
+  id: string;
+  compact?: boolean;
+}
+
+const { id, compact = false } = Astro.props;
+---
+
+<div class:list={["plate", compact && "is-compact"]} data-id={id}>
+  <div class="stage">
+    {id === "web-brutalism" && <span class="fake-link">a hyperlink</span>}
+    {id === "skeuomorphism" && <span class="knob">On</span>}
+    {id === "flat-design" && (
+      <div class="tiles">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    )}
+    {id === "glassmorphism" && <div class="frost">Panel</div>}
+    {id === "corporate-memphis" && <div class="blob"></div>}
+    {id === "vaporwave" && <div class="bust"></div>}
+    {id === "the-new-typography" && <p class="line">typography</p>}
+    {id === "international-typographic-style" && <p class="line">12.00</p>}
+    {id === "new-york-school" && <p class="line">idea</p>}
+    {id === "punk-diy" && <p class="line">NO</p>}
+    {id === "new-wave-swiss-punk" && <p class="line">typ</p>}
+    {id === "grunge" && <p class="line">ray</p>}
+    {id === "arts-and-crafts" && <p class="line">craft</p>}
+    {id === "art-nouveau" && <p class="line">nouveau</p>}
+    {id === "dada" && <p class="line">DADA</p>}
+    {id === "constructivism" && <p class="line">КНИГИ</p>}
+    {id === "de-stijl" && <span class="block"></span>}
+    {id === "art-deco" && <p class="line">NORD</p>}
+    {id === "psychedelia" && <p class="line">fillmore</p>}
+  </div>
+</div>
+
+<style>
+  .plate,
+  .stage {
+    height: 100%;
+  }
+
+  .stage {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .line,
+  .knob,
+  .frost,
+  .fake-link {
+    position: relative;
+    z-index: 1;
+  }
+
+  .plate[data-id="arts-and-crafts"] {
+    background: #e8dcc4;
+    color: #6b3a2a;
+  }
+  .plate[data-id="arts-and-crafts"] .stage {
+    box-shadow: inset 0 0 0 10px #c4a35a;
+  }
+  .plate[data-id="arts-and-crafts"] .line {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    margin: 0;
+    font-family: Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+  }
+
+  .plate[data-id="art-nouveau"] {
+    background: #f3e6c8;
+    color: #2d6a4f;
+  }
+  .plate[data-id="art-nouveau"] .stage::before {
+    content: "";
+    position: absolute;
+    inset: 12% 18%;
+    border: 3px solid #2d6a4f;
+    border-radius: 70% 30% 60% 40%;
+  }
+  .plate[data-id="art-nouveau"] .line {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    margin: 0;
+    font-family: Georgia, serif;
+    font-style: italic;
+  }
+
+  .plate[data-id="dada"] {
+    background: #f4e8c1;
+    color: #111;
+  }
+  .plate[data-id="dada"] .line {
+    position: absolute;
+    top: 28%;
+    left: 12%;
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 800;
+    transform: rotate(-12deg);
+  }
+  .plate[data-id="dada"] .stage::after {
+    content: "";
+    position: absolute;
+    right: 14%;
+    bottom: 18%;
+    width: 4rem;
+    height: 2.4rem;
+    background: #c8102e;
+    clip-path: polygon(0 20%, 80% 0, 100% 70%, 20% 100%);
+  }
+
+  .plate[data-id="constructivism"] {
+    background: #f2e8d5;
+    color: #111;
+  }
+  .plate[data-id="constructivism"] .stage::before {
+    content: "";
+    position: absolute;
+    top: 18%;
+    left: -10%;
+    width: 70%;
+    height: 1.1rem;
+    background: #c8102e;
+    transform: rotate(-18deg);
+  }
+  .plate[data-id="constructivism"] .stage::after {
+    content: "";
+    position: absolute;
+    right: 12%;
+    bottom: 16%;
+    width: 4.5rem;
+    height: 4.5rem;
+    background: #111;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  .plate[data-id="constructivism"] .line {
+    position: absolute;
+    right: 14%;
+    top: 18%;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+
+  .plate[data-id="de-stijl"] {
+    background: #f4f4f0;
+  }
+  .plate[data-id="de-stijl"] .stage::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 28%;
+    width: 0.55rem;
+    background: #111;
+  }
+  .plate[data-id="de-stijl"] .stage::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 62%;
+    height: 0.55rem;
+    background: #111;
+  }
+  .plate[data-id="de-stijl"] .block {
+    position: absolute;
+    top: 8%;
+    right: 8%;
+    width: 28%;
+    height: 38%;
+    background: #c8102e;
+  }
+
+  .plate[data-id="the-new-typography"] {
+    background: #f4f0e6;
+    color: #111;
+  }
+  .plate[data-id="the-new-typography"] .line {
+    position: absolute;
+    left: 10%;
+    top: 38%;
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .plate[data-id="the-new-typography"] .stage::before {
+    content: "";
+    position: absolute;
+    left: 10%;
+    top: 58%;
+    width: 36%;
+    height: 0.45rem;
+    background: #c8102e;
+  }
+
+  .plate[data-id="art-deco"] {
+    background: #0b1d2a;
+    color: #c9a227;
+  }
+  .plate[data-id="art-deco"] .line {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+  }
+  .plate[data-id="art-deco"] .stage::before,
+  .plate[data-id="art-deco"] .stage::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 3rem solid transparent;
+    border-right: 3rem solid transparent;
+    transform: translateX(-50%);
+  }
+  .plate[data-id="art-deco"] .stage::before {
+    top: 8%;
+    border-bottom: 1.6rem solid #c9a227;
+  }
+  .plate[data-id="art-deco"] .stage::after {
+    bottom: 8%;
+    border-top: 1.6rem solid #c9a227;
+  }
+
+  .plate[data-id="international-typographic-style"] {
+    background: #f4f4f0;
+    color: #111;
+  }
+  .plate[data-id="international-typographic-style"] .line {
+    position: absolute;
+    left: 12%;
+    bottom: 18%;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+  }
+  .plate[data-id="international-typographic-style"] .stage::before {
+    content: "";
+    position: absolute;
+    top: 14%;
+    right: 14%;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 9999px;
+    background: #e10600;
+  }
+
+  .plate[data-id="new-york-school"] {
+    background: #e8e2d6;
+    color: #1c1c1c;
+  }
+  .plate[data-id="new-york-school"] .line {
+    position: absolute;
+    left: 14%;
+    top: 36%;
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-style: italic;
+  }
+  .plate[data-id="new-york-school"] .stage::after {
+    content: "";
+    position: absolute;
+    right: 16%;
+    bottom: 22%;
+    width: 3.2rem;
+    height: 3.2rem;
+    background: #c45c26;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+
+  .plate[data-id="psychedelia"] {
+    background: #140018;
+    color: #ffea00;
+  }
+  .plate[data-id="psychedelia"] .line {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-shadow: 0.12rem 0 #ff2bd6, -0.12rem 0 #7cff3e;
+  }
+  .plate[data-id="psychedelia"] .stage::before {
+    content: "";
+    position: absolute;
+    inset: 10%;
+    border-radius: 50%;
+    background: conic-gradient(#ff2bd6, #7cff3e, #2b1bff, #ffea00, #ff2bd6);
+    opacity: 0.35;
+  }
+
+  .plate[data-id="punk-diy"] {
+    background: #f4f0e6;
+    color: #111;
+  }
+  .plate[data-id="punk-diy"] .line {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 800;
+    transform: rotate(-6deg);
+  }
+  .plate[data-id="punk-diy"] .stage {
+    box-shadow: inset 0 0 0 4px #111;
+    background-image: repeating-linear-gradient(
+      -12deg,
+      transparent,
+      transparent 8px,
+      rgba(0, 0, 0, 0.06) 8px,
+      rgba(0, 0, 0, 0.06) 9px
+    );
+  }
+
+  .plate[data-id="new-wave-swiss-punk"] {
+    background: #f4f4f0;
+    color: #111;
+  }
+  .plate[data-id="new-wave-swiss-punk"] .line {
+    position: absolute;
+    left: 12%;
+    top: 30%;
+    margin: 0;
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+  .plate[data-id="new-wave-swiss-punk"] .stage::before {
+    content: "";
+    position: absolute;
+    left: 12%;
+    top: 58%;
+    width: 40%;
+    height: 0.55rem;
+    background: #ff3b00;
+    box-shadow: 1.2rem 0.7rem 0 #00c2ff;
+  }
+
+  .plate[data-id="grunge"] {
+    background: #d8c9a3;
+    color: #3b2f2a;
+  }
+  .plate[data-id="grunge"] .line {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    margin: 0;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    opacity: 0.8;
+    transform: rotate(3deg);
+  }
+  .plate[data-id="grunge"] .stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(59, 47, 42, 0.08) 2px,
+      rgba(59, 47, 42, 0.08) 3px
+    );
+  }
+
+  .plate[data-id="skeuomorphism"] {
+    background: linear-gradient(180deg, #e8e0d4, #c4a574);
+  }
+  .plate[data-id="skeuomorphism"] .stage {
+    display: grid;
+    place-items: center;
+  }
+  .plate[data-id="skeuomorphism"] .knob {
+    display: grid;
+    width: 4.5rem;
+    height: 4.5rem;
+    place-items: center;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #3d2a14;
+    background: linear-gradient(180deg, #f0e4c8, #c4a574 55%, #6b4f2a);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.65),
+      0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .plate[data-id="flat-design"] {
+    background: #f4f4f0;
+  }
+  .plate[data-id="flat-design"] .tiles {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    padding: 1.1rem;
+  }
+  .plate[data-id="flat-design"] .tiles span:nth-child(1) {
+    background: #1a73e8;
+  }
+  .plate[data-id="flat-design"] .tiles span:nth-child(2) {
+    background: #34a853;
+  }
+  .plate[data-id="flat-design"] .tiles span:nth-child(3) {
+    background: #fbbc04;
+  }
+  .plate[data-id="flat-design"] .tiles span:nth-child(4) {
+    background: #ea4335;
+  }
+
+  .plate[data-id="vaporwave"] {
+    background: linear-gradient(180deg, #1a0a2e, #ff71ce 140%);
+  }
+  .plate[data-id="vaporwave"] .stage::before {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 42%;
+    background: repeating-linear-gradient(
+      to right,
+      transparent,
+      transparent 12px,
+      rgba(1, 205, 254, 0.45) 12px,
+      rgba(1, 205, 254, 0.45) 13px
+    );
+    transform: perspective(8rem) rotateX(50deg);
+    transform-origin: bottom;
+  }
+  .plate[data-id="vaporwave"] .bust {
+    position: absolute;
+    left: 50%;
+    top: 16%;
+    width: 3.2rem;
+    height: 4rem;
+    border-radius: 50% 50% 40% 40%;
+    background: #e8dcc8;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 0.35rem #01cdfe;
+  }
+
+  .plate[data-id="web-brutalism"] {
+    background: #fff;
+    color: #0000ee;
+  }
+  .plate[data-id="web-brutalism"] .stage {
+    display: grid;
+    place-items: center;
+    font-family: "Times New Roman", Times, serif;
+  }
+  .plate[data-id="web-brutalism"] .fake-link {
+    font-size: 1.2rem;
+    color: #0000ee;
+    text-decoration: underline;
+  }
+
+  .plate[data-id="glassmorphism"] {
+    background: linear-gradient(135deg, #5b7cfa, #ff71ce 80%);
+  }
+  .plate[data-id="glassmorphism"] .stage {
+    display: grid;
+    place-items: center;
+  }
+  .plate[data-id="glassmorphism"] .frost {
+    width: min(70%, 12rem);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.22);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .plate[data-id="corporate-memphis"] {
+    background: #fff6ee;
+  }
+  .plate[data-id="corporate-memphis"] .stage {
+    display: grid;
+    place-items: center;
+  }
+  .plate[data-id="corporate-memphis"] .blob {
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    background: #ffb3c7;
+    box-shadow:
+      1.6rem 2.2rem 0 -0.7rem #8ecae6,
+      -1.4rem 2.4rem 0 -0.9rem #ffd166;
+  }
+</style>

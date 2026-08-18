@@ -1,0 +1,40 @@
+---
+import Bauhaus from "./specimens/Bauhaus.astro";
+import Memphis from "./specimens/Memphis.astro";
+import Minimalism from "./specimens/Minimalism.astro";
+import Neubrutalism from "./specimens/Neubrutalism.astro";
+import PlateById from "./specimens/PlateById.astro";
+import Y2K from "./specimens/Y2K.astro";
+import { hasSpecimen } from "../lib/specimens";
+
+interface Props {
+  id: string;
+  compact?: boolean;
+}
+
+const { id, compact = false } = Astro.props;
+
+const custom = {
+  bauhaus: Bauhaus,
+  memphis: Memphis,
+  minimalism: Minimalism,
+  neubrutalism: Neubrutalism,
+  y2k: Y2K,
+} as const;
+
+const Custom = Object.hasOwn(custom, id) ? custom[id as keyof typeof custom] : undefined;
+---
+
+<div class="h-full">
+  {
+    Custom ? (
+      <Custom compact={compact} />
+    ) : hasSpecimen(id) ? (
+      <PlateById id={id} compact={compact} />
+    ) : (
+      <div class="grid h-full place-items-center text-sm text-zinc-400">
+        Specimen forthcoming
+      </div>
+    )
+  }
+</div>

@@ -1,0 +1,46 @@
+---
+import GrammarSwatch from "./GrammarSwatch.astro";
+import ImageRail from "./ImageRail.astro";
+import Plate from "./Plate.astro";
+import RailItem from "./RailItem.astro";
+import Specimen from "./Specimen.astro";
+import { railTiles, type StyleEntry } from "../lib/styles";
+
+interface Props {
+  entry: StyleEntry;
+  size?: "index" | "entry";
+}
+
+const { entry, size = "index" } = Astro.props;
+const tiles = railTiles(entry, size);
+const selfHref = `/${entry.id}`;
+---
+
+<ImageRail label={`Visual grammar for ${entry.data.title}`}>
+  {
+    tiles.map((tile) => {
+      switch (tile.kind) {
+        case "specimen":
+          return (
+            <RailItem caption={tile.label}>
+              <Plate href={selfHref} label={`${entry.data.title} specimen`} size={size}>
+                <Specimen id={tile.id} compact />
+              </Plate>
+            </RailItem>
+          );
+        case "swatch":
+          return (
+            <RailItem caption={tile.label}>
+              <Plate href={selfHref} label={`${entry.data.title} ${tile.label}`} size={size}>
+                <GrammarSwatch id={tile.id} aspect={tile.aspect} />
+              </Plate>
+            </RailItem>
+          );
+        default: {
+          const _exhaustive: never = tile;
+          return _exhaustive;
+        }
+      }
+    })
+  }
+</ImageRail>

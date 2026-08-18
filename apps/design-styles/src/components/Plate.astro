@@ -1,0 +1,26 @@
+---
+interface Props {
+  href?: string;
+  label: string;
+  size?: "index" | "entry";
+}
+
+const { href, label, size = "index" } = Astro.props;
+const classes = [
+  "block overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100",
+  "aspect-[5/3]",
+  size === "entry" ? "w-80 sm:w-[28rem]" : "w-64 sm:w-80",
+];
+---
+
+{
+  href ? (
+    <a href={href} aria-label={label} class:list={classes}>
+      <slot />
+    </a>
+  ) : (
+    <div class:list={classes}>
+      <slot />
+    </div>
+  )
+}

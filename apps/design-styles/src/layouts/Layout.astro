@@ -1,0 +1,65 @@
+---
+import "@fontsource-variable/manrope";
+import "../styles/global.css";
+
+import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+
+import { SITE_DESCRIPTION, SITE_NAME } from "../lib/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  path: string;
+}
+
+const { title, description = SITE_DESCRIPTION, path } = Astro.props;
+const canonical = new URL(path, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="preload"
+      href={manropeLatin}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Bridger Tower" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body class="min-h-screen bg-zinc-50 text-zinc-950 selection:bg-orange-200">
+    <main class="grid min-w-0 max-w-7xl gap-12 p-6 sm:p-12">
+      <nav>
+        <h2 class="font-medium">
+          <a href="/" class="group">
+            {SITE_NAME}
+          </a>
+        </h2>
+      </nav>
+
+      <slot />
+
+      <footer class="grid gap-1 text-xs text-zinc-400">
+        <p>
+          © design-styles.com / made by
+          <a href="https://bridger.to" class="link">bridger</a>
+          @
+          <a href="https://wipdes.com" class="link">wip</a>
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -47,5 +47,8 @@ yarn-error.log*
 .tldr/
 .claude/worktrees/
 
+# local planning and scratch work
+/.scratch/
+
 # next.js — repo migrated off Next, but stale dev caches must never be tracked
 .next/

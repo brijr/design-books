@@ -1,0 +1,381 @@
+---
+import { SWATCHES } from "../lib/swatches";
+import type { SwatchAspect } from "../lib/styles";
+
+interface Props {
+  id: string;
+  aspect: SwatchAspect;
+}
+
+const { id, aspect } = Astro.props;
+const spec = SWATCHES[id];
+
+function swatchBody() {
+  if (!spec) {
+    return "empty" as const;
+  }
+  switch (aspect) {
+    case "color":
+      return "color" as const;
+    case "type":
+      return "type" as const;
+    case "form":
+      return "form" as const;
+    default: {
+      const _exhaustive: never = aspect;
+      return _exhaustive;
+    }
+  }
+}
+
+const body = swatchBody();
+---
+
+<div class="swatch" data-id={id} data-aspect={aspect}>
+  {
+    body === "empty" ? (
+      <p class="fallback">{aspect}</p>
+    ) : body === "color" && spec ? (
+      <div class="chips" style={spec.ground ? `background: ${spec.ground}` : undefined}>
+        {spec.colors.map((color) => (
+          <span class="chip" style={`background: ${color}`} />
+        ))}
+      </div>
+    ) : body === "type" ? (
+      <p class="type">Aa</p>
+    ) : (
+      <div class="form"></div>
+    )
+  }
+</div>
+
+<style>
+  .swatch {
+    display: grid;
+    height: 100%;
+    place-items: center;
+    padding: 1.25rem;
+  }
+
+  .chips {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 0.75rem;
+  }
+
+  .chip {
+    display: block;
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+
+  .type {
+    margin: 0;
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .fallback {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #a1a1aa;
+    text-transform: lowercase;
+  }
+
+  .swatch[data-id="arts-and-crafts"] .type {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
+  }
+  .swatch[data-id="arts-and-crafts"] .form {
+    width: 3.5rem;
+    height: 2.4rem;
+    border: 3px solid #6b3a2a;
+    background: #e8dcc4;
+  }
+
+  .swatch[data-id="art-nouveau"] .type {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    color: #2d6a4f;
+  }
+  .swatch[data-id="art-nouveau"] .form {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 70% 30% 60% 40%;
+    background: #2d6a4f;
+  }
+
+  .swatch[data-id="dada"] .type {
+    font-weight: 800;
+    transform: rotate(-8deg);
+  }
+  .swatch[data-id="dada"] .form {
+    width: 3.4rem;
+    height: 2.2rem;
+    background: #111;
+    clip-path: polygon(0 20%, 80% 0, 100% 70%, 20% 100%);
+  }
+
+  .swatch[data-id="constructivism"] .type {
+    font-weight: 800;
+    letter-spacing: -0.08em;
+    text-transform: uppercase;
+  }
+  .swatch[data-id="constructivism"] .form {
+    width: 3.6rem;
+    height: 0.7rem;
+    background: #c8102e;
+    transform: rotate(-18deg);
+  }
+
+  .swatch[data-id="de-stijl"] .type,
+  .swatch[data-id="bauhaus"] .type {
+    font-weight: 500;
+    letter-spacing: -0.04em;
+  }
+  .swatch[data-id="de-stijl"] .form,
+  .swatch[data-id="bauhaus"] .form {
+    width: 2.4rem;
+    height: 2.4rem;
+    background: #c8102e;
+  }
+  .swatch[data-id="de-stijl"] .form {
+    outline: 0.35rem solid #111;
+    outline-offset: 0.35rem;
+  }
+
+  .swatch[data-id="the-new-typography"] .type {
+    font-weight: 800;
+    letter-spacing: -0.06em;
+  }
+  .swatch[data-id="the-new-typography"] .form {
+    width: 4rem;
+    height: 0.45rem;
+    background: #111;
+  }
+
+  .swatch[data-id="art-deco"] .type {
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 2.2rem;
+  }
+  .swatch[data-id="art-deco"] .form {
+    width: 0;
+    height: 0;
+    border-left: 1.6rem solid transparent;
+    border-right: 1.6rem solid transparent;
+    border-bottom: 2.6rem solid #c9a227;
+  }
+
+  .swatch[data-id="international-typographic-style"] .type {
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+  .swatch[data-id="international-typographic-style"] .form {
+    display: grid;
+    width: 3.4rem;
+    height: 2.6rem;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.2rem;
+    background: transparent;
+  }
+  .swatch[data-id="international-typographic-style"] .form::before,
+  .swatch[data-id="international-typographic-style"] .form::after {
+    content: "";
+    background: #111;
+  }
+
+  .swatch[data-id="new-york-school"] .type {
+    font-weight: 700;
+    font-style: italic;
+  }
+  .swatch[data-id="new-york-school"] .form {
+    width: 3.5rem;
+    height: 0.15rem;
+    background: #1c1c1c;
+    transform: rotate(-6deg);
+  }
+
+  .swatch[data-id="psychedelia"] .type {
+    font-weight: 800;
+    color: #ff2bd6;
+    text-shadow: 0.12rem 0 #7cff3e, -0.12rem 0 #2b1bff;
+  }
+  .swatch[data-id="psychedelia"] .form {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    background: conic-gradient(#ff2bd6, #7cff3e, #2b1bff, #ffea00, #ff2bd6);
+  }
+
+  .swatch[data-id="punk-diy"] .type {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .swatch[data-id="punk-diy"] .form {
+    width: 3.2rem;
+    height: 2.2rem;
+    border: 3px dashed #111;
+    background: #f4f0e6;
+  }
+
+  .swatch[data-id="new-wave-swiss-punk"] .type {
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 2.4rem;
+  }
+  .swatch[data-id="new-wave-swiss-punk"] .form {
+    width: 3.6rem;
+    height: 0.55rem;
+    background: #ff3b00;
+    box-shadow: 0 0.7rem 0 #00c2ff;
+  }
+
+  .swatch[data-id="memphis"] .type {
+    font-weight: 800;
+    background: #ffe14a;
+    padding: 0.1rem 0.35rem;
+    box-shadow: 0.2rem 0.2rem 0 #111;
+  }
+  .swatch[data-id="memphis"] .form {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 9999px;
+    background: #2ec4b6;
+    box-shadow: 0.25rem 0.25rem 0 #111;
+  }
+
+  .swatch[data-id="grunge"] .type {
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    opacity: 0.85;
+    filter: contrast(1.2);
+  }
+  .swatch[data-id="grunge"] .form {
+    width: 3.4rem;
+    height: 2.4rem;
+    background: #3b2f2a;
+    clip-path: polygon(4% 10%, 96% 0, 88% 100%, 0 86%);
+  }
+
+  .swatch[data-id="y2k"] .type {
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    background: linear-gradient(180deg, #fff 0%, #c5c8d4 38%, #fff 52%, #8b90a0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .swatch[data-id="y2k"] .form {
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 60% 40% 55% 45%;
+    background: linear-gradient(145deg, #7ef0ff, #2d6bff 55%, #9a4dff);
+  }
+
+  .swatch[data-id="minimalism"] .type {
+    font-weight: 400;
+    letter-spacing: 0.18em;
+  }
+  .swatch[data-id="minimalism"] .form {
+    width: 4rem;
+    height: 1px;
+    background: #111;
+  }
+
+  .swatch[data-id="skeuomorphism"] .type {
+    font-weight: 700;
+    color: #6b4f2a;
+    text-shadow: 0 1px 0 #fff;
+  }
+  .swatch[data-id="skeuomorphism"] .form {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, #f0e4c8, #c4a574 55%, #6b4f2a);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.6),
+      0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .swatch[data-id="flat-design"] .type {
+    font-weight: 600;
+    color: #1a73e8;
+  }
+  .swatch[data-id="flat-design"] .form {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.4rem;
+    background: #1a73e8;
+  }
+
+  .swatch[data-id="vaporwave"] .type {
+    font-weight: 700;
+    color: #ff71ce;
+    text-shadow: 0.15rem 0 #01cdfe;
+  }
+  .swatch[data-id="vaporwave"] .form {
+    width: 3.2rem;
+    height: 2.4rem;
+    background: linear-gradient(#ff71ce, #01cdfe);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+
+  .swatch[data-id="web-brutalism"] .type {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 2.4rem;
+    color: #0000ee;
+    text-decoration: underline;
+  }
+  .swatch[data-id="web-brutalism"] .form {
+    width: 3.6rem;
+    height: 1.6rem;
+    border: 2px outset #e0e0e0;
+    background: #d4d4d4;
+  }
+
+  .swatch[data-id="neubrutalism"] .type {
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .swatch[data-id="neubrutalism"] .form {
+    width: 3.25rem;
+    height: 2.25rem;
+    border: 3px solid #111;
+    background: #fff36a;
+    box-shadow: 4px 4px 0 #111;
+  }
+
+  .swatch[data-id="glassmorphism"] .type {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .swatch[data-id="glassmorphism"] {
+    background: linear-gradient(135deg, #1b2744, #3d4f7c);
+  }
+  .swatch[data-id="glassmorphism"] .form {
+    width: 3.4rem;
+    height: 2.2rem;
+    border-radius: 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .swatch[data-id="corporate-memphis"] .type {
+    font-weight: 700;
+    color: #5b5b7a;
+  }
+  .swatch[data-id="corporate-memphis"] .form {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50% 50% 45% 55%;
+    background: #ffb3c7;
+  }
+</style>

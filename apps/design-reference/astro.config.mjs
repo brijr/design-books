@@ -9,6 +9,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://design-reference.com",
   output: "static",
+  // Pinned so `pnpm dev` at the repo root can run every app at once.
+  server: { port: 4323 },
   adapter: cloudflare({
     imageService: { build: "compile", runtime: "passthrough" },
     platformProxy: {

@@ -1,0 +1,67 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class:list={["minimalism", compact && "is-compact"]} data-specimen="live">
+  <div class="stage">
+    <p class="mark">Aa</p>
+    <span class="rule" aria-hidden="true"></span>
+    {!compact && <p class="caption">one family · one rule · the rest is margin</p>}
+  </div>
+</div>
+
+<style>
+  .minimalism {
+    height: 100%;
+    background: #fafafa;
+    color: #111;
+  }
+
+  .stage {
+    display: grid;
+    height: 100%;
+    min-height: inherit;
+    place-items: center;
+    padding: 2.5rem;
+  }
+
+  .mark {
+    margin: 0;
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    line-height: 1;
+  }
+
+  .rule {
+    width: 3rem;
+    height: 1px;
+    margin-top: 1.25rem;
+    background: #111;
+  }
+
+  .caption {
+    margin: 1.5rem 0 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: #737373;
+  }
+
+  .is-compact .stage {
+    padding: 1.25rem;
+  }
+
+  .is-compact .mark {
+    font-size: 2rem;
+    letter-spacing: 0.14em;
+  }
+
+  .is-compact .rule {
+    margin-top: 0.75rem;
+  }
+</style>

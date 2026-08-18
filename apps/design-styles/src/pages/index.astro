@@ -1,55 +1,114 @@
 ---
-import "@fontsource-variable/manrope";
-import "../styles/global.css";
+import { getCollection } from "astro:content";
 
-// Imported as a URL so Vite emits and hashes it and the preload below points
-// at the real built filename (same pattern as apps/design-books).
-import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+import StyleRail from "../components/StyleRail.astro";
+import Layout from "../layouts/Layout.astro";
+import { SITE_DESCRIPTION, SITE_NAME } from "../lib/site";
+import { groupByEra, MEDIUMS, mediumLabel, sortByYear } from "../lib/styles";
+
+const entries = sortByYear(await getCollection("styles"));
+const eras = groupByEra(entries);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Design Styles</title>
-    <meta name="description" content="A site about design styles by Bridger Tower. Coming soon." />
-    <meta name="robots" content="noindex, nofollow" />
-    <link rel="icon" href="data:," />
-    <!-- crossorigin is required even same-origin: fonts are always fetched in
-         CORS mode, and omitting it causes a second, duplicate download. -->
-    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
-  </head>
-  <body
-    class="flex min-h-dvh flex-col bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100"
-  >
-    <main class="grid flex-1 place-items-center px-6">
-      <div class="max-w-md text-center">
-        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
-          design&#8209;styles
-        </h1>
-        <p class="mt-4 text-zinc-500 dark:text-zinc-400">Coming soon.</p>
-      </div>
-    </main>
-    <footer
-      class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 p-6 text-sm text-zinc-500 dark:text-zinc-400"
-    >
-      <a class="hover:text-zinc-900 dark:hover:text-zinc-100" href="https://bridger.to"
-        >A design site by Bridger Tower</a
-      >
-      <span aria-hidden="true">·</span>
-      <a class="hover:text-zinc-900 dark:hover:text-zinc-100" href="https://design-books.com"
-        >design-books.com</a
-      >
-      <span aria-hidden="true">·</span>
-      <a class="hover:text-zinc-900 dark:hover:text-zinc-100" href="https://design-reference.com"
-        >design-reference.com</a
-      >
-      <span aria-hidden="true">·</span>
-      <a
-        class="hover:text-zinc-900 dark:hover:text-zinc-100"
-        href="https://design-philosophies.com">design-philosophies.com</a
-      >
-    </footer>
-  </body>
-</html>
+<Layout title={SITE_NAME} description={SITE_DESCRIPTION} path="/">
+  <section class="catalog grid min-w-0 gap-12">
+    <div>
+      <h1 class="font-medium">A visual field guide to design.</h1>
+      <p class="text-zinc-400">
+        Movements and visual languages, arranged in time.
+      </p>
+    </div>
+
+    <fieldset class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-zinc-400">
+      <legend class="sr-only">Filter by medium</legend>
+      <label class="cursor-pointer">
+        <input class="sr-only" type="radio" name="medium" value="all" checked />
+        All
+      </label>
+      {
+        MEDIUMS.map((medium) => (
+          <label class="cursor-pointer">
+            <input class="sr-only" type="radio" name="medium" value={medium} />
+            {mediumLabel(medium)}
+          </label>
+        ))
+      }
+    </fieldset>
+
+    <nav aria-label="Jump to a style" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        eras.map((group) => (
+          <div class="era-group grid gap-2">
+            <p class="font-medium">{group.label}</p>
+            <ul class="grid gap-1">
+              {group.entries.map((entry) => (
+                <li data-medium={entry.data.medium.join(" ")}>
+                  <a class="link" href={`#${entry.id}`}>
+                    <span class="tabular-nums text-zinc-400">{entry.data.yearStart}</span>
+                    {" "}
+                    {entry.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+
+    {
+      entries.map((entry) => (
+        <article
+          id={entry.id}
+          class="grid min-w-0 scroll-mt-6 gap-6"
+          data-medium={entry.data.medium.join(" ")}
+        >
+          <div>
+            <p class="tabular-nums text-zinc-400">{entry.data.yearStart}</p>
+            <h2 class="font-medium">
+              <a class="link" href={`/${entry.id}`}>
+                {entry.data.title}
+              </a>
+            </h2>
+            <p class="max-w-prose text-zinc-400">{entry.data.definition}</p>
+            <p class="text-sm text-zinc-400">
+              {entry.data.type}
+              <span aria-hidden="true"> · </span>
+              {entry.data.status}
+              <span aria-hidden="true"> · </span>
+              {entry.data.place}
+            </p>
+          </div>
+          <StyleRail entry={entry} />
+        </article>
+      ))
+    }
+  </section>
+</Layout>
+
+<style>
+  .catalog label:has(:checked) {
+    color: var(--color-zinc-950);
+  }
+
+  .catalog label:has(:focus-visible) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .catalog:has([name="medium"][value="graphic"]:checked) [data-medium]:not([data-medium~="graphic"]),
+  .catalog:has([name="medium"][value="editorial"]:checked) [data-medium]:not([data-medium~="editorial"]),
+  .catalog:has([name="medium"][value="identity"]:checked) [data-medium]:not([data-medium~="identity"]),
+  .catalog:has([name="medium"][value="interface"]:checked) [data-medium]:not([data-medium~="interface"]),
+  .catalog:has([name="medium"][value="product"]:checked) [data-medium]:not([data-medium~="product"]) {
+    display: none;
+  }
+
+  .catalog:has([name="medium"][value="graphic"]:checked) .era-group:not(:has([data-medium~="graphic"])),
+  .catalog:has([name="medium"][value="editorial"]:checked) .era-group:not(:has([data-medium~="editorial"])),
+  .catalog:has([name="medium"][value="identity"]:checked) .era-group:not(:has([data-medium~="identity"])),
+  .catalog:has([name="medium"][value="interface"]:checked) .era-group:not(:has([data-medium~="interface"])),
+  .catalog:has([name="medium"][value="product"]:checked) .era-group:not(:has([data-medium~="product"])) {
+    display: none;
+  }
+</style>

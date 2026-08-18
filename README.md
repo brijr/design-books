@@ -6,7 +6,7 @@ of [Astro](https://astro.build) apps deployed to Cloudflare Workers.
 | App | Domain | What it is |
 | --- | --- | --- |
 | [`apps/design-books`](apps/design-books) | [design-books.com](https://design-books.com) · [designbooks.org](https://designbooks.org) | A curated library of the best books on design and HCI |
-| `apps/design-styles` | design-styles.com | Coming soon |
+| [`apps/design-styles`](apps/design-styles) | [design-styles.com](https://design-styles.com) | A visual field guide to design movements and styles |
 | `apps/design-reference` | design-reference.com | Coming soon |
 | `apps/design-philosophies` | design-philosophies.com | Coming soon |
 
@@ -14,10 +14,17 @@ of [Astro](https://astro.build) apps deployed to Cloudflare Workers.
 
 ```bash
 pnpm install
-pnpm dev            # design-books dev server
+pnpm dev            # every app, in parallel
 pnpm --filter <app> dev
 pnpm build          # build every app
 ```
+
+| App | Dev URL |
+| --- | --- |
+| design-books | http://localhost:4321 |
+| design-styles | http://localhost:4322 |
+| design-reference | http://localhost:4323 |
+| design-philosophies | http://localhost:4324 |
 
 Each app deploys as its own Cloudflare Worker via git-connected Workers Builds,
 with the project's root directory set to `apps/<app>` and build watch paths

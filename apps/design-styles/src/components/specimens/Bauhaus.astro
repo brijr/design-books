@@ -1,0 +1,143 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class:list={["bauhaus", compact && "is-compact"]} data-specimen="diagram">
+  <div class="stage" aria-hidden={compact}>
+    <span class="shape triangle"></span>
+    <span class="shape circle"></span>
+    <span class="shape square"></span>
+    <span class="bar"></span>
+    {
+      !compact && (
+        <dl class="notes">
+          <div>
+            <dt>color</dt>
+            <dd>primary triad</dd>
+          </div>
+          <div>
+            <dt>form</dt>
+            <dd>circle · square · triangle</dd>
+          </div>
+          <div>
+            <dt>type</dt>
+            <dd>geometric sans</dd>
+          </div>
+        </dl>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .bauhaus {
+    --paper: #f3efe4;
+    --red: #c8102e;
+    --blue: #003da5;
+    --yellow: #f0c400;
+    --ink: #111111;
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .stage {
+    position: relative;
+    height: 100%;
+    min-height: inherit;
+    overflow: hidden;
+  }
+
+  .shape,
+  .bar {
+    position: absolute;
+  }
+
+  .triangle {
+    top: 12%;
+    left: 10%;
+    width: 0;
+    height: 0;
+    border-left: 2.4rem solid transparent;
+    border-right: 2.4rem solid transparent;
+    border-bottom: 4.2rem solid var(--yellow);
+  }
+
+  .circle {
+    top: 22%;
+    right: 18%;
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 9999px;
+    background: var(--blue);
+  }
+
+  .square {
+    top: 46%;
+    left: 22%;
+    width: 4.5rem;
+    height: 4.5rem;
+    background: var(--red);
+  }
+
+  .bar {
+    right: 0;
+    bottom: 34%;
+    width: 42%;
+    height: 0.7rem;
+    background: var(--ink);
+  }
+
+  .notes {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.85rem;
+    left: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+
+  .notes dt {
+    color: color-mix(in oklab, var(--ink) 55%, var(--paper));
+  }
+
+  .notes dd {
+    margin: 0;
+  }
+
+  .is-compact .triangle {
+    top: 14%;
+    left: 12%;
+    border-left-width: 1.5rem;
+    border-right-width: 1.5rem;
+    border-bottom-width: 2.6rem;
+  }
+
+  .is-compact .circle {
+    width: 3.4rem;
+    height: 3.4rem;
+    top: 20%;
+    right: 16%;
+  }
+
+  .is-compact .square {
+    width: 2.8rem;
+    height: 2.8rem;
+    top: 48%;
+    left: 24%;
+  }
+
+  .is-compact .bar {
+    bottom: 28%;
+    height: 0.45rem;
+  }
+</style>

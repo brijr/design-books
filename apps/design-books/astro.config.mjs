@@ -10,6 +10,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://design-books.com",
   output: "static",
+  // Pinned so `pnpm dev` at the repo root can run every app at once.
+  server: { port: 4321 },
   // Production serves /a-pattern-language directly and 308s the trailing-slash
   // form away. Astro's directory format does the exact inverse, which would put
   // a redirect hop in front of every inbound link, every sitemap <loc>, and

@@ -1,0 +1,246 @@
+---
+import { getCollection, render } from "astro:content";
+
+import StyleRail from "../components/StyleRail.astro";
+import Layout from "../layouts/Layout.astro";
+import { hrefForTitle, neighbors, sortByYear, titleHrefMap, type StyleEntry } from "../lib/styles";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("styles");
+
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, entries },
+  }));
+}
+
+interface Props {
+  entry: StyleEntry;
+  entries: StyleEntry[];
+}
+
+const { entry, entries } = Astro.props;
+const { Content } = await render(entry);
+const byTitle = titleHrefMap(entries);
+const { previous, next } = neighbors(entry, sortByYear(entries));
+
+function relatedHref(name: string, slug?: string) {
+  if (slug) {
+    const match = entries.find((item) => item.id === slug);
+    return match ? `/${match.id}` : undefined;
+  }
+  return hrefForTitle(name, byTitle);
+}
+
+function linkedNames(names: string[]) {
+  return names.map((name, index) => ({
+    name,
+    href: relatedHref(name),
+    last: index === names.length - 1,
+  }));
+}
+
+const from = linkedNames(entry.data.influences);
+const ledTo = linkedNames(entry.data.descendants);
+---
+
+<Layout title={`${entry.data.title} — Design Styles`} description={entry.data.definition} path={`/${entry.id}`}>
+  <article class="grid min-w-0 gap-12">
+    <div class="grid gap-4">
+      <div>
+        <h1 class="font-medium">{entry.data.title}</h1>
+        <p class="text-zinc-400">{entry.data.definition}</p>
+      </div>
+
+      {
+        (from.length > 0 || ledTo.length > 0) && (
+          <p class="text-sm text-zinc-400">
+            {from.length > 0 && (
+              <>
+                <span class="text-zinc-950">From</span>{" "}
+                {from.map((item) => (
+                  <span>
+                    {item.href ? (
+                      <a class="link" href={item.href}>
+                        {item.name}
+                      </a>
+                    ) : (
+                      item.name
+                    )}
+                    {item.last ? "" : ", "}
+                  </span>
+                ))}
+              </>
+            )}
+            {from.length > 0 && ledTo.length > 0 && <span aria-hidden="true"> · </span>}
+            {ledTo.length > 0 && (
+              <>
+                <span class="text-zinc-950">Led to</span>{" "}
+                {ledTo.map((item) => (
+                  <span>
+                    {item.href ? (
+                      <a class="link" href={item.href}>
+                        {item.name}
+                      </a>
+                    ) : (
+                      item.name
+                    )}
+                    {item.last ? "" : ", "}
+                  </span>
+                ))}
+              </>
+            )}
+          </p>
+        )
+      }
+
+      <p class="text-sm text-zinc-400">
+        {entry.data.period}
+        <span aria-hidden="true"> · </span>
+        {entry.data.place}
+        <span aria-hidden="true"> · </span>
+        {entry.data.type}
+        <span aria-hidden="true"> · </span>
+        {entry.data.status}
+      </p>
+
+      <ul class="grid max-w-prose gap-3 text-zinc-400">
+        {entry.data.marks.map((mark) => (
+          <li>{mark}</li>
+        ))}
+      </ul>
+    </div>
+
+    <StyleRail entry={entry} size="entry" />
+
+    <section class="prose-styles grid max-w-prose gap-4">
+      <Content />
+    </section>
+
+    {
+      (entry.data.figures.length > 0 || entry.data.works.length > 0) && (
+        <section class="grid gap-6 sm:grid-cols-2">
+          {entry.data.figures.length > 0 && (
+            <div class="grid gap-3">
+              <h2 class="font-medium">Key figures</h2>
+              <ul class="grid gap-3">
+                {entry.data.figures.map((figure) => (
+                  <li>
+                    <p>{figure.name}</p>
+                    <p class="text-sm text-zinc-400">{figure.note}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {entry.data.works.length > 0 && (
+            <div class="grid gap-3">
+              <h2 class="font-medium">Key works</h2>
+              <ul class="grid gap-3">
+                {entry.data.works.map((work) => (
+                  <li>
+                    <p>
+                      {work.title}
+                      {work.year ? <span class="text-zinc-400"> {work.year}</span> : null}
+                    </p>
+                    {work.note && <p class="text-sm text-zinc-400">{work.note}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )
+    }
+
+    {
+      entry.data.confusedWith.length > 0 && (
+        <section class="grid max-w-prose gap-3">
+          <h2 class="font-medium">Often confused with</h2>
+          <ul class="grid gap-3">
+            {entry.data.confusedWith.map((item) => {
+              const href = relatedHref(item.name, item.slug);
+              return (
+                <li>
+                  <p>
+                    {href ? (
+                      <a class="link" href={href}>
+                        {item.name}
+                      </a>
+                    ) : (
+                      item.name
+                    )}
+                  </p>
+                  <p class="text-sm text-zinc-400">{item.why}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      (entry.data.books.length > 0 || entry.data.philosophies.length > 0) && (
+        <section class="grid gap-8 sm:grid-cols-2">
+          {entry.data.philosophies.length > 0 && (
+            <div class="grid gap-2">
+              <h2 class="font-medium">Related philosophies</h2>
+              <ul class="grid gap-2">
+                {entry.data.philosophies.map((item) => (
+                  <li>
+                    <p>{item.title}</p>
+                    {item.note && <p class="text-sm text-zinc-400">{item.note}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {entry.data.books.length > 0 && (
+            <div class="grid gap-2">
+              <h2 class="font-medium">Related books</h2>
+              <p class="text-sm text-zinc-400">
+                {entry.data.books.map((book, index) => (
+                  <span>
+                    <a class="link" href={book.href}>
+                      {book.title}
+                    </a>
+                    {index < entry.data.books.length - 1 ? ", " : ""}
+                  </span>
+                ))}
+              </p>
+            </div>
+          )}
+        </section>
+      )
+    }
+
+    {
+      (previous || next) && (
+        <nav aria-label="Adjacent styles" class="grid gap-3 text-sm text-zinc-400 sm:grid-cols-2">
+          {previous && (
+            <a class="link" href={`/${previous.id}`}>
+              <span class="tabular-nums">{previous.data.yearStart}</span> {previous.data.title}
+            </a>
+          )}
+          {next && (
+            <a class:list={["link sm:text-right", !previous && "sm:col-start-2"]} href={`/${next.id}`}>
+              <span class="tabular-nums">{next.data.yearStart}</span> {next.data.title}
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </article>
+</Layout>
+
+<style>
+  .prose-styles :global(h2) {
+    font-weight: 500;
+  }
+
+  .prose-styles :global(p) {
+    max-width: 65ch;
+    color: var(--color-zinc-400);
+  }
+</style>

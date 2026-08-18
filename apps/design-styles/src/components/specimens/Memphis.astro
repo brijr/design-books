@@ -1,0 +1,137 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class:list={["memphis", compact && "is-compact"]} data-specimen="diagram">
+  <div class="stage" aria-hidden={compact}>
+    <span class="terrazzo"></span>
+    <svg class="squiggle" viewBox="0 0 160 40" aria-hidden="true">
+      <path
+        d="M4 22 C 20 4, 36 36, 52 18 S 84 6, 100 24 132 38, 156 14"
+        fill="none"
+        stroke="#111"
+        stroke-width="6"
+        stroke-linecap="round"></path>
+    </svg>
+    <span class="orb"></span>
+    <span class="stripe"></span>
+    {
+      !compact && (
+        <dl class="notes">
+          <div>
+            <dt>surface</dt>
+            <dd>laminate · terrazzo</dd>
+          </div>
+          <div>
+            <dt>form</dt>
+            <dd>squiggle · clash</dd>
+          </div>
+        </dl>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .memphis {
+    --pink: #f4a5c0;
+    --teal: #2ec4b6;
+    --yellow: #ffe14a;
+    --ink: #111111;
+    height: 100%;
+    background: var(--pink);
+    color: var(--ink);
+  }
+
+  .stage {
+    position: relative;
+    height: 100%;
+    min-height: inherit;
+    overflow: hidden;
+  }
+
+  .terrazzo {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 12% 22%, var(--ink) 0 0.18rem, transparent 0.2rem),
+      radial-gradient(circle at 28% 70%, var(--teal) 0 0.28rem, transparent 0.3rem),
+      radial-gradient(circle at 70% 30%, var(--yellow) 0 0.22rem, transparent 0.24rem),
+      radial-gradient(circle at 82% 76%, var(--ink) 0 0.14rem, transparent 0.16rem),
+      radial-gradient(circle at 48% 48%, white 0 0.2rem, transparent 0.22rem),
+      radial-gradient(circle at 90% 18%, var(--teal) 0 0.16rem, transparent 0.18rem),
+      radial-gradient(circle at 16% 88%, var(--yellow) 0 0.2rem, transparent 0.22rem);
+  }
+
+  .squiggle {
+    position: absolute;
+    top: 18%;
+    left: 8%;
+    width: 58%;
+  }
+
+  .orb {
+    position: absolute;
+    top: 28%;
+    right: 14%;
+    width: 4.75rem;
+    height: 4.75rem;
+    border-radius: 9999px;
+    background: var(--teal);
+    box-shadow: 0.55rem 0.55rem 0 var(--ink);
+  }
+
+  .stripe {
+    position: absolute;
+    left: 18%;
+    bottom: 18%;
+    width: 5.5rem;
+    height: 5.5rem;
+    background: repeating-linear-gradient(
+      -18deg,
+      var(--yellow),
+      var(--yellow) 0.55rem,
+      var(--ink) 0.55rem,
+      var(--ink) 1.1rem
+    );
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .notes {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.85rem;
+    left: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+
+  .notes dt {
+    opacity: 0.6;
+  }
+
+  .notes dd {
+    margin: 0;
+  }
+
+  .is-compact .orb {
+    width: 3rem;
+    height: 3rem;
+    box-shadow: 0.35rem 0.35rem 0 var(--ink);
+  }
+
+  .is-compact .stripe {
+    width: 3.4rem;
+    height: 3.4rem;
+    bottom: 16%;
+  }
+</style>
